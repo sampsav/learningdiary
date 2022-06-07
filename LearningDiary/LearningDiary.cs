@@ -5,6 +5,7 @@ namespace LearningDiary
 {
     class LearningDiary
     {
+        //testi
         private Dictionary<int,Topic> PastLearnings;
         private Dictionary<int,Task> Tasks;
         //Could be IO interface
@@ -47,7 +48,7 @@ namespace LearningDiary
             }
         }
 
-        public void AddItemToDiary(int id, string title, string description, double estimatedTimeToMaster, string source)
+        public void AddTopicToDiary(int id, string title, string description, double estimatedTimeToMaster, string source)
         {
             if (!IsIdInDiary(id))
             {
@@ -58,6 +59,11 @@ namespace LearningDiary
             {
                 throw new ArgumentException($"Unique constrain violation, id = {id} not unique");
             }
+        }
+
+        public void AddTaskToDiary()
+        {
+
         }
 
         public void StartTopicById(int id)
@@ -84,7 +90,6 @@ namespace LearningDiary
             }
             return false;
         }
-
 
         public List<string> GetAllItemsCSV()
         {

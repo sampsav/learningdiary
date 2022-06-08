@@ -39,7 +39,7 @@ namespace LearningDiary
             this.Source = source;
             this.InProgress = false;
             this.AlreadyStudied = false;
-            this.TasksRelatedToTopic = new List<Task>;
+            this.TasksRelatedToTopic = new List<Task>();
         }
 
         public void StartLearning()
@@ -60,17 +60,6 @@ namespace LearningDiary
                 this.InProgress = false;
                 this.AlreadyStudied = true;
             }
-        }
-
-        public string GetCSVRepresentation()
-        {
-            return $"{this.id};{this.Title};{this.Description};{this.EstimatedTimeToMaster};" +
-                $"{this.TimeSpent};{this.Source};{this.StartLearningDate};{this.InProgress};" +
-                $"{this.CompletionDate}";
-        }
-        public override string ToString()
-        {
-            return $"";
         }
     }
 }

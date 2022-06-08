@@ -5,7 +5,7 @@ namespace LearningDiary
 {
     class LearningDiary
     {
-        //SQL tyylinen jako eri "tauluihin", taskit ja topicit taskit pitää parittaa erikseen -> hidasta jos iso määrä
+
         private Dictionary<int, Topic> PastLearnings;
         private Dictionary<int, Task> TasksWithoutTopic;
         private HashSet<int> TaskIdList;
@@ -20,7 +20,9 @@ namespace LearningDiary
 
         public LearningDiary()
         {
-
+            this.PastLearnings = new Dictionary<int, Topic>();
+            this.TasksWithoutTopic = new Dictionary<int, Task>();
+            this.TaskIdList = new HashSet<int>();
         }
 
         private void LoadAllTopicsFromStorage()
@@ -35,7 +37,7 @@ namespace LearningDiary
         //autogenerate taskID
         public void AddTopicToDiary(string title, string description, double estimatedTimeToMaster, string source)
         {
-            //Who keeps track of the ID generation, get Unique Id from storage device, ?
+            //Who keeps track of the ID generation, get Unique Id from storage?
             int topicId = PastLearnings.Count;
 
             AddTopicToDiary(topicId, title, description, estimatedTimeToMaster, source);
@@ -74,11 +76,15 @@ namespace LearningDiary
                 throw new ArgumentException($"Unique constrain violation, TaskId = {taskId} not unique");
             }
 
-            else
+            else if(this.PastLearnings.ContainsKey(topicId))
             {
                 Task newTask = new Task(taskId, topicId, title, description, notes, deadline);
                 this.PastLearnings[topicId].TasksRelatedToTopic.Add(newTask);
                 this.TaskIdList.Add(taskId);
+            }
+            else
+            {
+                throw new ArgumentException($"Unique constrain violation, TaskId = {topicId} not unique");
             }
         }
 
@@ -91,7 +97,7 @@ namespace LearningDiary
 
         public void AddTaskWithoutTopic(int taskId, string title, string description, string notes, DateTime deadline)
         {
-            if (this.TaskIdList.Contains(taskId))
+            if (!this.TaskIdList.Contains(taskId))
             {
                 throw new ArgumentException($"Unique constrain violation, TaskId = {taskId} not unique");
             }
@@ -110,7 +116,10 @@ namespace LearningDiary
             {
                 this.PastLearnings[topicId].StartLearning();
             }
-            throw new ArgumentException($"Task ID not found, Topicid = {topicId}");
+            else
+            {
+                throw new ArgumentException($"Task ID not found, Topicid = {topicId}");
+            }
         }
 
         public void FinishTopicById(int topicId)
@@ -119,7 +128,11 @@ namespace LearningDiary
             {
                 this.PastLearnings[topicId].FinishLearning();
             }
+            else
+            {
+
             throw new ArgumentException($"Topic ID not found, Topicid = {topicId}");
+            }
         }
 
         public void FinishTaskById(int taskId)
@@ -128,10 +141,25 @@ namespace LearningDiary
             {
                 this.TasksWithoutTopic[taskId].FinishTask();
             }
+            else
+            {
             throw new ArgumentException($"Task ID not found, taskid = {taskId}");
+
+            }
         }
 
+        public Topic GetTopicById(int topicId)
+        {
+            if (this.PastLearnings.ContainsKey(topicId))
+            {
+                return this.PastLearnings[topicId];
+            }
 
+            else
+            {
+                throw new ArgumentException($"Topic ID not found, Topicid = {topicId}");
+            }
+        }
         public List<Topic> GetAllTopics()
         {
             return new List<Topic>(this.PastLearnings.Values);
@@ -141,37 +169,5 @@ namespace LearningDiary
         {
             return this.PastLearnings[topicId].TasksRelatedToTopic;
         }
-
-        public List<string> GetAllItemsCSV()
-        {
-            List<string> allTopics = new List<string>();
-
-            foreach (Topic topic in this.PastLearnings.Values)
-            {
-                string retval = topic.GetCSVRepresentation();
-                allTopics.Add(retval);
-            }
-
-
-            return allTopics;
-        }
-
-
-
-
-
-        public List<Topic> GetAllItems()
-        {
-            List<Topic> allDiaryItems = new List<Topic>();
-
-            foreach (Topic item in this.PastLearnings.Values)
-            {
-                allDiaryItems.Add(item);
-            }
-
-
-            return allDiaryItems;
-        }
-
     }
 }

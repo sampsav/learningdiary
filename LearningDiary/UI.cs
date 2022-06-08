@@ -56,5 +56,11 @@ namespace LearningDiary
             Console.WriteLine("4 Print shopping list");
         }
 
+        private static void PrintHeading(LearningDiaryItem item)
+        {
+            //testi
+            Collection nameOfProperties = 
+        }
+
     }
 }

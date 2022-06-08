@@ -16,16 +16,5 @@ namespace LearningDiary
             
 
         }
-
-        public string GetCSVRepresentation()
-        {
-            return $"{this.id};{this.Title};{this.Description};{this.EstimatedTimeToMaster};" +
-                $"{this.TimeSpent};{this.Source};{this.StartLearningDate};{this.InProgress};" +
-                $"{this.CompletionDate}";
-        }
-        public override string ToString()
-        {
-            return $"";
-        }
     }
 }

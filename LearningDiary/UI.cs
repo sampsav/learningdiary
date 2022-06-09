@@ -59,7 +59,8 @@ namespace LearningDiary
                 else if (command == "3")
                 {
 
-
+                    List<string> topicParameters = AskTopicParameters();
+                    this.ObjectStorage.AddTopicToDiary(topicParameters[0], topicParameters[1], Convert.ToDouble(topicParameters[2]), "web");
                 }
 
                 else if (command == "4")
@@ -170,16 +171,17 @@ namespace LearningDiary
                 str += StringFormatterToTable(property.Name);
             }
             str += RESET;
-            Console.Write(str);
-            Console.WriteLine("");
+            Console.WriteLine(str);
+            
         }
 
         private static void PrintAllLerningDiaryTopics(List<Topic> items)
         {
-            string str = "";
+            
 
             foreach (var item in items)
             {
+                string str = "";
                 foreach (var property in item.GetType().GetProperties())
                 {
                     string prop = property.GetValue(item).ToString();
@@ -194,9 +196,11 @@ namespace LearningDiary
 
                         str += StringFormatterToTable(prop);
                     }
+                    
                 }
+                Console.WriteLine(str);
             }
-            Console.WriteLine(str);
+            
         }
 
         //toistoa

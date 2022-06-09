@@ -16,13 +16,15 @@ namespace LearningDiary
 
         public void Insert(Topic newItemToInsert)
         {
+            string tempcsvLineToWrite = "";
             string csvLineToWrite = "";
             foreach (var item in newItemToInsert.GetType().GetProperties())
             {
-                csvLineToWrite += $"{item.GetValue(item).ToString()}";
+                tempcsvLineToWrite += $"{item.GetValue(newItemToInsert)};";
             }
             //remove last ;
-            _ = csvLineToWrite.Remove(csvLineToWrite.Length - 1);
+            csvLineToWrite = tempcsvLineToWrite.Remove(tempcsvLineToWrite.Length - 1);
+            Console.WriteLine(csvLineToWrite);
             SaveLineToFile(this.FilePath, csvLineToWrite);
 
         }

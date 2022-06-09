@@ -14,8 +14,8 @@ namespace LearningDiary
 
             LearningDiary Wk32diaryrepo = new LearningDiary(TopicFileRepository,TaskFileRepository);
 
-            Wk32diaryrepo.AddTopicToDiary("testi", "testi", 10, "web");
-            Wk32diaryrepo.StartTopicById(0);
+            //Wk32diaryrepo.AddTopicToDiary("testi", "testi", 10, "web");
+            //Wk32diaryrepo.StartTopicById(0);
             LearningDiaryUI ConterllerAndUi = new LearningDiaryUI(Wk32diaryrepo);
 
             ConterllerAndUi.Execute();

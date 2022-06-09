@@ -5,8 +5,8 @@ namespace LearningDiary
 {
     class LearningDiary
     {
-        //Laajahko toteutus, yritetty tehdä siten, että ohjelmaa voisi laajentaa modulaarisesti
-        //Tukee tiedostojen lukua kannasta sekä uusien topic ja task kirjoitusta kantaa
+        //Laajahko toteutus, yritetty tehdä siten, että ohjelmaa voisi laajentaa tulevina viikkoina modulaarisesti -> katsotaan onnistuuko
+        //Tukee kaikkien topicien ja taskien lukua "kannasta" sekä uusien topicien ja taskien kirjoituksen "kantaan"
         //Updatejen tekeminen TODO listalla. Onnistuu helpommin oikealla tietokannalla
 
         private Dictionary<int, Topic> PastLearnings;
@@ -19,8 +19,8 @@ namespace LearningDiary
             this.PastLearnings = new Dictionary<int, Topic>();
             this.TasksWithoutTopic = new Dictionary<int, Task>();
             this.TaskIdList = new HashSet<int>();
-            this.PersistentStorageTasks = PersistentStorageTopics;
-            this.PersistentStorageTopics = PersistentStorageTasks;
+            this.PersistentStorageTasks = PersistentStorageTasks;
+            this.PersistentStorageTopics = PersistentStorageTopics;
         }
 
         public LearningDiary()
@@ -42,7 +42,7 @@ namespace LearningDiary
         //autogenerate taskID
         public void AddTopicToDiary(string title, string description, double estimatedTimeToMaster, string source)
         {
-            //Who keeps track of the ID generation, get Unique Id from storage?
+            //Unique ID generointi kannan vastuulle?
             int topicId = PastLearnings.Count;
 
             AddTopicToDiary(topicId, title, description, estimatedTimeToMaster, source);

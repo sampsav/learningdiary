@@ -9,9 +9,8 @@ namespace LearningDiary
         private Dictionary<int, Topic> PastLearnings;
         private Dictionary<int, Task> TasksWithoutTopic;
         private HashSet<int> TaskIdList;
-        //Voisi olla Storage interface, voisi käyttää plugin tyyppisesti eri datalähteitä
-        private object StorageDevice;
-        public LearningDiary(object StorageDevice)
+        private object PersistentStorage;
+        public LearningDiary(object PersistentStorage)
         {
             this.PastLearnings = new Dictionary<int, Topic>();
             this.TasksWithoutTopic = new Dictionary<int, Task>();

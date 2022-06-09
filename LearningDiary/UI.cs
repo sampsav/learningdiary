@@ -15,11 +15,11 @@ namespace LearningDiary
 
         public void Execute()
         {
-            
+
             while (true)
-            { 
+            {
                 PrintInstructions();
-                
+
                 Console.Write("Input command: ");
                 string command = Console.ReadLine();
 
@@ -49,7 +49,7 @@ namespace LearningDiary
                         else
                         {
                             int topicId = Convert.ToInt32(selection);
-                            ManipulateTopicState(topicId);
+                            ModifyTopicState(topicId);
 
                         }
                     }
@@ -73,18 +73,18 @@ namespace LearningDiary
         private static List<string> AskTopicParameters()
         {
             List<string> parameters = new List<string>();
-        
+
             Console.WriteLine("Input title");
             parameters.Add(Console.ReadLine());
-        
+
             Console.WriteLine("Input description");
             parameters.Add(Console.ReadLine());
-        
+
             Console.WriteLine("Input estimated time to master");
-            parameters.Add(Console.ReadLine());        
-        
+            parameters.Add(Console.ReadLine());
+
             return parameters;
-        
+
         }
 
 
@@ -94,13 +94,13 @@ namespace LearningDiary
 
             Console.WriteLine("Input title");
             parameters.Add(Console.ReadLine());
-            
+
             Console.WriteLine("Input description");
             parameters.Add(Console.ReadLine());
 
             Console.WriteLine("Input notes");
             parameters.Add(Console.ReadLine());
-            
+
             Console.WriteLine("Input deadline (if empty default is tomorrow)");
             string input = Console.ReadLine();
             if (input == "")
@@ -114,24 +114,24 @@ namespace LearningDiary
 
         }
 
-        private void ManipulateTopicState(int topicId)
+        private void ModifyTopicState(int topicId)
         {
 
-            Topic topicUnderManipulation = this.ObjectStorage.GetTopicById(topicId);
+            Topic topicUnderModification = this.ObjectStorage.GetTopicById(topicId);
 
             List<Topic> templist = new List<Topic>();
-            templist.Add(topicUnderManipulation);
+            templist.Add(topicUnderModification);
 
             Console.WriteLine("Topic state:");
-            PrintHeading(topicUnderManipulation);
+            PrintHeading(topicUnderModification);
             PrintAllLerningDiaryTopics(templist);
 
             Console.WriteLine("Start topic? y/n");
-            if (Console.ReadLine() == "y"){this.ObjectStorage.StartTopicById(topicId);}
-            
+            if (Console.ReadLine() == "y") { this.ObjectStorage.StartTopicById(topicId); }
+
             Console.WriteLine("End topic? y/n");
-            if (Console.ReadLine() == "y"){ this.ObjectStorage.FinishTopicById(topicId); }
-            
+            if (Console.ReadLine() == "y") { this.ObjectStorage.FinishTopicById(topicId); }
+
             Console.WriteLine("Add task to topic? y/n");
             if (Console.ReadLine() == "y")
             {
@@ -140,12 +140,12 @@ namespace LearningDiary
             }
 
             Console.WriteLine("Topic state after manipulation");
-            PrintHeading(topicUnderManipulation);
+            PrintHeading(topicUnderModification);
             PrintAllLerningDiaryTopics(templist);
 
             Console.WriteLine("List of tasks related to topic:");
-            PrintHeading(topicUnderManipulation.TasksRelatedToTopic[0]);
-            PrintAllTasksRelatedToTopic(topicUnderManipulation.TasksRelatedToTopic);
+            PrintHeading(topicUnderModification.TasksRelatedToTopic[0]);
+            PrintAllTasksRelatedToTopic(topicUnderModification.TasksRelatedToTopic);
         }
 
 
@@ -156,7 +156,7 @@ namespace LearningDiary
             Console.WriteLine("1 List all learning topics");
             Console.WriteLine("2 Select to start topic state change");
             Console.WriteLine("3 Add Topic");
-            Console.WriteLine("4 List all tasks related to topic");            
+            Console.WriteLine("4 List all tasks related to topic");
         }
 
         private static void PrintHeading(LearningDiaryItem item)
@@ -198,7 +198,7 @@ namespace LearningDiary
             }
             Console.WriteLine(str);
         }
-        
+
         //toistoa
         private static void PrintAllTasksRelatedToTopic(List<Task> items)
         {

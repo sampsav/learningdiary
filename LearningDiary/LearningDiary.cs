@@ -5,16 +5,22 @@ namespace LearningDiary
 {
     class LearningDiary
     {
+        //Laajahko toteutus, yritetty tehdä siten, että ohjelmaa voisi laajentaa modulaarisesti
+        //Tukee tiedostojen lukua kannasta sekä uusien topic ja task kirjoitusta kantaa
+        //Updatejen tekeminen TODO listalla. Onnistuu helpommin oikealla tietokannalla
 
         private Dictionary<int, Topic> PastLearnings;
         private Dictionary<int, Task> TasksWithoutTopic;
         private HashSet<int> TaskIdList;
-        private object PersistentStorage;
-        public LearningDiary(object PersistentStorage)
+        private FileIO PersistentStorageTopics;
+        private FileIO PersistentStorageTasks;
+        public LearningDiary(FileIO PersistentStorageTopics,FileIO PersistentStorageTasks)
         {
             this.PastLearnings = new Dictionary<int, Topic>();
             this.TasksWithoutTopic = new Dictionary<int, Task>();
             this.TaskIdList = new HashSet<int>();
+            this.PersistentStorageTasks = PersistentStorageTopics;
+            this.PersistentStorageTopics = PersistentStorageTasks;
         }
 
         public LearningDiary()
@@ -45,7 +51,7 @@ namespace LearningDiary
 
         public void AddTopicToDiary(int topicId, string title, string description, double estimatedTimeToMaster, string source)
         {
-            //toistoa?
+
             if (this.PastLearnings.ContainsKey(topicId))
             {
                 throw new ArgumentException($"Unique constrain violation, topicId = {topicId} not unique");
@@ -55,9 +61,54 @@ namespace LearningDiary
             {
                 Topic newTopic = new Topic(topicId, title, description, estimatedTimeToMaster, source);
                 this.PastLearnings.Add(topicId, newTopic);
+                this.PersistentStorageTopics.Insert(newTopic);
             }
 
         }
+
+        public void StartTopicById(int topicId)
+        {
+            if (this.PastLearnings.ContainsKey(topicId))
+            {
+                this.PastLearnings[topicId].StartLearning();
+            }
+            else
+            {
+                throw new ArgumentException($"Task ID not found, Topicid = {topicId}");
+            }
+        }
+
+        public void FinishTopicById(int topicId)
+        {
+            if (this.PastLearnings.ContainsKey(topicId))
+            {
+                this.PastLearnings[topicId].FinishLearning();
+            }
+            else
+            {
+
+                throw new ArgumentException($"Topic ID not found, Topicid = {topicId}");
+            }
+        }
+
+        public Topic GetTopicById(int topicId)
+        {
+            if (this.PastLearnings.ContainsKey(topicId))
+            {
+                return this.PastLearnings[topicId];
+            }
+
+            else
+            {
+                throw new ArgumentException($"Topic ID not found, Topicid = {topicId}");
+            }
+        }
+        public List<Topic> GetAllTopics()
+        {
+            return new List<Topic>(this.PastLearnings.Values);
+        }
+
+
 
         //autogenerate taskID
         public void AddTaskToTopic(int topicId, string title, string description, string notes, DateTime deadline)
@@ -75,7 +126,7 @@ namespace LearningDiary
                 throw new ArgumentException($"Unique constrain violation, TaskId = {taskId} not unique");
             }
 
-            else if(this.PastLearnings.ContainsKey(topicId))
+            else if (this.PastLearnings.ContainsKey(topicId))
             {
                 Task newTask = new Task(taskId, topicId, title, description, notes, deadline);
                 this.PastLearnings[topicId].TasksRelatedToTopic.Add(newTask);
@@ -109,31 +160,6 @@ namespace LearningDiary
             }
         }
 
-        public void StartTopicById(int topicId)
-        {
-            if (this.PastLearnings.ContainsKey(topicId))
-            {
-                this.PastLearnings[topicId].StartLearning();
-            }
-            else
-            {
-                throw new ArgumentException($"Task ID not found, Topicid = {topicId}");
-            }
-        }
-
-        public void FinishTopicById(int topicId)
-        {
-            if (this.PastLearnings.ContainsKey(topicId))
-            {
-                this.PastLearnings[topicId].FinishLearning();
-            }
-            else
-            {
-
-            throw new ArgumentException($"Topic ID not found, Topicid = {topicId}");
-            }
-        }
-
         public void FinishTaskById(int taskId)
         {
             if (this.TasksWithoutTopic.ContainsKey(taskId))
@@ -142,26 +168,9 @@ namespace LearningDiary
             }
             else
             {
-            throw new ArgumentException($"Task ID not found, taskid = {taskId}");
+                throw new ArgumentException($"Task ID not found, taskid = {taskId}");
 
             }
-        }
-
-        public Topic GetTopicById(int topicId)
-        {
-            if (this.PastLearnings.ContainsKey(topicId))
-            {
-                return this.PastLearnings[topicId];
-            }
-
-            else
-            {
-                throw new ArgumentException($"Topic ID not found, Topicid = {topicId}");
-            }
-        }
-        public List<Topic> GetAllTopics()
-        {
-            return new List<Topic>(this.PastLearnings.Values);
         }
 
         public List<Task> GetAllTasksRelatedToTopic(int topicId)

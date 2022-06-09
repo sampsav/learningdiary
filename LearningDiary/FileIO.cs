@@ -14,7 +14,7 @@ namespace LearningDiary
 
         //interface
 
-        public void Insert(Topic newItemToInsert)
+        public void Insert(LearningDiaryItem newItemToInsert)
         {
             string tempcsvLineToWrite = "";
             string csvLineToWrite = "";

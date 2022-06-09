@@ -5,11 +5,11 @@ namespace LearningDiary
     class Task : LearningDiaryItem
     {
 
-        public int TopicId { get; private set; }
-        public string Notes { get; private set; }
-        public DateTime Deadline { get; private set; }
+        public int TopicId { get; set; }
+        public string Notes { get; set; }
+        public DateTime Deadline { get; set; }
         //public enum Priority {"high","low"};
-        public bool Done { get; private set; }
+        public bool Done { get; set; }
 
         public Task(int id, string title, string description, string notes, DateTime deadline) : base(id, title, description)
         {

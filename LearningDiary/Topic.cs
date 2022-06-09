@@ -4,7 +4,7 @@ namespace LearningDiary
 {
     class Topic : LearningDiaryItem
     {
-        public double EstimatedTimeToMaster { get; private set; }
+        public double EstimatedTimeToMaster { get; set; }
 
         public double TimeSpent
         {
@@ -25,14 +25,24 @@ namespace LearningDiary
             }
             private set { }
         }
-        public string Source { get; private set; }
-        public DateTime StartLearningDate { get; private set; }
-        public bool InProgress { get; private set; }
-        public DateTime CompletionDate { get; private set; }
-        public bool AlreadyStudied { get; private set; }
+        public string Source { get; set; }
+        public DateTime StartLearningDate { get; set; }
+        public bool InProgress { get; set; }
+        public DateTime CompletionDate { get; set; }
+        public bool AlreadyStudied { get; set; }
 
-        public List<Task> TasksRelatedToTopic { get; private set; }
+        public List<Task> TasksRelatedToTopic { get; set; }
 
+        public Topic() { }
+        public Topic(int id, string title, string description, double estimatedTimeToMaster, string source, 
+            DateTime StartLearningDate, bool InProgress, DateTime CompletionDate, bool AlreadyStudied) : base(id, title, description)
+        {
+            this.EstimatedTimeToMaster = estimatedTimeToMaster;
+            this.Source = source;
+            this.InProgress = false;
+            this.AlreadyStudied = false;
+            this.TasksRelatedToTopic = new List<Task>();
+        }
         public Topic(int id, string title, string description, double estimatedTimeToMaster, string source) : base(id, title, description)
         {
             this.EstimatedTimeToMaster = estimatedTimeToMaster;

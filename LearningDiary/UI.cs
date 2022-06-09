@@ -33,7 +33,21 @@ namespace LearningDiary
                     Console.Clear();
                     List<Topic> topicObjects = this.ObjectStorage.GetAllTopics();
                     PrintHeading(topicObjects[0]);
-                    PrintAllLerningDiaryTopics(topicObjects);
+
+                    while (true)
+                    {
+                        topicObjects = this.ObjectStorage.GetAllTopics();
+                        if (topicObjects.Count > 0)
+                        {
+                            
+                            PrintAllLerningDiaryTopics(topicObjects);
+                            Console.Write("\r");
+                        }
+                        else
+                        {
+                            Console.WriteLine("No Topics in Learning Diary");
+                        }
+                    }
                 }
 
                 else if (command == "2")
@@ -198,7 +212,7 @@ namespace LearningDiary
                     }
                     
                 }
-                Console.WriteLine(str);
+                Console.Write(str);
             }
             
         }

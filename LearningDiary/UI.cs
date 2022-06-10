@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace LearningDiary
 {
@@ -33,15 +34,31 @@ namespace LearningDiary
                     Console.Clear();
                     List<Topic> topicObjects = this.ObjectStorage.GetAllTopics();
                     PrintHeading(topicObjects[0]);
-
-                    while (true)
+                    bool updateLoop = true;
+                    //update TimeSpent live
+                    while (updateLoop)
                     {
+                        //non blocking input
+                        if (Console.KeyAvailable)
+                        {
+                            ConsoleKeyInfo key = Console.ReadKey(true);
+                            switch (key.Key)
+                            {
+                                case ConsoleKey.E:
+                                    updateLoop = false;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+
                         topicObjects = this.ObjectStorage.GetAllTopics();
                         if (topicObjects.Count > 0)
                         {
                             
                             PrintAllLerningDiaryTopics(topicObjects);
                             Console.Write("\r");
+                            Thread.Sleep(50);
                         }
                         else
                         {
@@ -191,7 +208,6 @@ namespace LearningDiary
 
         private static void PrintAllLerningDiaryTopics(List<Topic> items)
         {
-            
 
             foreach (var item in items)
             {
@@ -205,6 +221,13 @@ namespace LearningDiary
 
                         str += StringFormatterToTable(item.TasksRelatedToTopic.Count.ToString());
                     }
+
+                    else if(property.Name.IndexOf("TimeSpent") != -1)
+                    {
+                        double converted = Convert.ToDouble(prop);
+                        str += StringFormatterToTable(Math.Round(converted).ToString());
+                    }
+                    
                     else
                     {
 
@@ -217,7 +240,7 @@ namespace LearningDiary
             
         }
 
-        //toistoa
+        
         private static void PrintAllTasksRelatedToTopic(List<Task> items)
         {
             string str = "";

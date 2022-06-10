@@ -16,6 +16,10 @@ namespace LearningDiary
 
             Wk32diaryrepo.AddTopicToDiary("testi", "testi", 10, "web");
             Wk32diaryrepo.StartTopicById(0);
+
+            Wk32diaryrepo.AddTopicToDiary("testi12345", "testi98765", 10, "web");
+            Wk32diaryrepo.StartTopicById(1);
+
             LearningDiaryUI ConterllerAndUi = new LearningDiaryUI(Wk32diaryrepo);
 
             ConterllerAndUi.Execute();

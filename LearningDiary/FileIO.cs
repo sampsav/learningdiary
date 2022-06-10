@@ -35,6 +35,11 @@ namespace LearningDiary
 
         }
 
+        public void Delete(LearningDiaryItem itemToDelete)
+        {
+
+        }
+
         public List<string[]> GetAll()
         {
             string[] fileContent = ReadAllLinesFromFile(this.FilePath);

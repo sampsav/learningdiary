@@ -8,7 +8,7 @@ namespace LearningDiary
         public int TopicId { get; set; }
         public string Notes { get; set; }
         public DateTime Deadline { get; set; }
-        //public enum Priority {"high","low"};
+        public enum Priority {high,low};
         public bool Done { get; set; }
 
         public Task(int id, string title, string description, string notes, DateTime deadline) : base(id, title, description)

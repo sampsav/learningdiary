@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Text;
 
 namespace LearningDiary
 {
@@ -61,13 +62,21 @@ namespace LearningDiary
         {
             Console.Clear();
             List<Topic> topicObjects = this.ObjectStorage.GetAllTopics();
+
+            if (topicObjects.Count == 0)
+            {
+                Console.WriteLine("No Topics in Learning Diary");
+                Thread.Sleep(5000);
+                return;
+            }
+
             int menuRowCount = topicObjects.Count;
             int currentMenuItem = 1;
             bool updateLoop = true;
             Console.WriteLine("Usage Instructions:\nDownArrow: Cycle topic list, S: Start selected topic, F: Finish selected topic, A: Add task to selected topic, E:Exit to main menu\n");
             PrintHeading(topicObjects[0]);
             (int cursorInitialLeftPos, int cursorInitialTopPos) = Console.GetCursorPosition();
-            //Interaktiivinen menurakenne topicien valintaan. Vain nuolialas tuettuna
+            //Interaktiivinen menurakenne topicien valintaan ja manipulointiin. Vain nuolialas tuettuna
             while (updateLoop)
             {
                 //non blocking input
@@ -76,11 +85,30 @@ namespace LearningDiary
                     ConsoleKeyInfo key = Console.ReadKey(true);
                     switch (key.Key)
                     {
+                        case ConsoleKey.UpArrow:
+
+                            if(currentMenuItem < 1)
+                            {
+                                currentMenuItem = menuRowCount;
+                                //tyhjennä key buffer
+                                while (Console.KeyAvailable)
+                                    Console.ReadKey(false);
+                            }
+
+                            else
+                            {
+                                currentMenuItem--;
+                            }
+                            break;
+
                         case ConsoleKey.DownArrow:
 
-                            if (currentMenuItem == menuRowCount)
+                            if (currentMenuItem > menuRowCount)
                             {
+
                                 currentMenuItem = 1;
+                                while (Console.KeyAvailable)
+                                    Console.ReadKey(false);
                             }
                             else
                             {
@@ -97,8 +125,16 @@ namespace LearningDiary
                             break;
 
                         case ConsoleKey.A:
-                            List<string> topicParameters = AskTaskParameters();
-                            this.ObjectStorage.AddTaskToTopic(topicObjects[currentMenuItem-1].id, topicParameters[0], topicParameters[1], topicParameters[2], DateTime.Parse(topicParameters[3]));
+                            try
+                            {
+                                List<string> topicParameters = AskTaskParameters();
+                                this.ObjectStorage.AddTaskToTopic(topicObjects[currentMenuItem - 1].id, topicParameters[0], topicParameters[1], topicParameters[2], DateTime.Parse(topicParameters[3]));
+                            }
+                            catch (Exception e)
+                            {
+
+                                Console.WriteLine(e);
+                            }
                             break;
 
                         case ConsoleKey.E:
@@ -110,26 +146,21 @@ namespace LearningDiary
                 }
 
                 topicObjects = this.ObjectStorage.GetAllTopics();
-                if (topicObjects.Count > 0)
-                {
-                    DrawTopicTable(cursorInitialLeftPos,cursorInitialTopPos,currentMenuItem,topicObjects);
-                    Thread.Sleep(50);
-                }
-                else
-                {
-                    Console.WriteLine("No Topics in Learning Diary");
-                }
+                DrawTopicTable(cursorInitialLeftPos, cursorInitialTopPos, currentMenuItem, topicObjects);
+                Thread.Sleep(40);
+                
             }
         }
 
-
         private static void DrawTopicTable(int tableStartLeft, int tableStartTop, int selectedRow, List<Topic> topics)
         {
-            //Kursori aina samaan paikkaan draw callin alussa
+            //Kursori aina samaan paikkaan piirron alussa
             Console.SetCursorPosition(tableStartLeft, tableStartTop);
             int rowsToDraw = topics.Count;
+            int rowBeingDrawn = tableStartTop;
             int currentRow = 1;
             bool colorThisRow;
+            //var stringBuilder = new StringBuilder();
             foreach (Topic item in topics)
             {
                 if (currentRow == selectedRow)
@@ -141,7 +172,8 @@ namespace LearningDiary
                     colorThisRow = false;
                 }
                 PrintLearningTopicRow(item, colorThisRow);
-                Console.SetCursorPosition(tableStartLeft, tableStartTop + 1);
+                Console.SetCursorPosition(tableStartLeft, rowBeingDrawn);
+                rowBeingDrawn++;
                 if (rowsToDraw == currentRow)
                 {
                     return;
@@ -152,10 +184,7 @@ namespace LearningDiary
 
         private static void PrintLearningTopicRow(Topic item, bool colorRow)
         {
-            if (colorRow == true)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-            }
+            var stringBuilder = new StringBuilder();
             string str = "";
             foreach (var property in item.GetType().GetProperties())
             {
@@ -163,22 +192,27 @@ namespace LearningDiary
 
                 if (prop.IndexOf("Task") != -1)
                 {
-                    str += StringFormatterToTable(item.TasksRelatedToTopic.Count.ToString());
+                    stringBuilder.Append(StringFormatterToTable(item.TasksRelatedToTopic.Count.ToString()));
                 }
 
                 else if (property.Name.IndexOf("TimeSpent") != -1)
                 {
                     double converted = Convert.ToDouble(prop);
-                    str += StringFormatterToTable(Math.Round(converted).ToString() + "s");
+                    stringBuilder.Append(StringFormatterToTable(Math.Round(converted).ToString() + "s"));
                 }
 
                 else
                 {
-                    str += StringFormatterToTable(prop);
+                    stringBuilder.Append(StringFormatterToTable(prop));
                 }
 
             }
-            Console.Write(str);
+            if (colorRow == true)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+            }
+
+            Console.Write(stringBuilder.ToString());
             Console.ForegroundColor = ConsoleColor.White;
         }
 
@@ -246,7 +280,7 @@ namespace LearningDiary
             }
             str += RESET;
             Console.WriteLine(str);
-            
+
         }
 
         private static void PrintAllTasksRelatedToTopic(List<Task> items)

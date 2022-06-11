@@ -5,7 +5,7 @@ namespace LearningDiary
 {
     class LearningDiary
     {
-        //Laajahko toteutus, yritetty tehdä siten, että ohjelmaa voisi laajentaa tulevina viikkoina modulaarisesti -> katsotaan onnistuuko
+        //Yritetty tehdä siten, että ohjelmaa voisi laajentaa tulevina viikkoina modulaarisesti -> katsotaan onnistuuko
         //Tukee kaikkien topicien ja taskien lukua "kannasta" sekä uusien topicien ja taskien kirjoituksen "kantaan"
         //Updatejen tekeminen TODO listalla. Onnistuu helpommin oikealla tietokannalla
 
@@ -22,7 +22,7 @@ namespace LearningDiary
             this.TaskIdList = new HashSet<int>();
             this.PersistentStorageTopics = PersistentStorageTopics;
             this.PersistentStorageTasks = PersistentStorageTasks;
-           // LoadAllTopicsFromStorage();
+            LoadAllTopicsFromStorage();
             //LoadAllTasksFromStorage();
         }
 
@@ -35,11 +35,12 @@ namespace LearningDiary
 
         private void LoadAllTopicsFromStorage()
         {
-            List<string[]> allTopics = this.PersistentStorageTopics.GetAll();
+            List<Dictionary<string,string>> allTopics = this.PersistentStorageTopics.GetAll();
 
-            foreach (string[] topicParameters in allTopics)
+            foreach (Dictionary<string,string> topicParameters in allTopics)
             {
-                int topicId = Convert.ToInt32(topicParameters[8]);
+
+                int topicId = Convert.ToInt32(topicParameters["id"]);
                 if (this.PastLearnings.ContainsKey(topicId))
                 {
                     throw new ArgumentException($"Unique constrain violation, topicId = {topicId} not unique");
@@ -47,27 +48,36 @@ namespace LearningDiary
 
                 else
                 {
+                    try
+                    {
+                        Topic newTopic = new Topic()
+                        {
+                            id = topicId,
+                            Title = topicParameters["Title"],
+                            Description = topicParameters["Description"],
+                            EstimatedTimeToMaster = Convert.ToDouble(topicParameters["EstimatedTimeToMaster"]),
+                            Source = topicParameters["Source"],
+                            StartLearningDate = Convert.ToDateTime(topicParameters["StartLearningDate"]),
+                            InProgress = Convert.ToBoolean(topicParameters["InProgress"]),
+                            CompletionDate = Convert.ToDateTime(topicParameters["CompletionDate"]),
+                            AlreadyStudied = Convert.ToBoolean(topicParameters["AlreadyStudied"]),
+                            TasksRelatedToTopic = new List<Task>()
+                    };
+                        this.PastLearnings.Add(topicId, newTopic);
+                    }
+                    catch (Exception e)
+                    {
 
-                    Topic newTopic = new Topic(topicId, topicParameters[9], topicParameters[10], Convert.ToDouble(topicParameters[0]), topicParameters[2],
-                          Convert.ToDateTime(topicParameters[3]), Convert.ToBoolean(topicParameters[4]), Convert.ToDateTime(topicParameters[5]), Convert.ToBoolean(topicParameters[6]));
+                        Console.WriteLine(e);
+                    }
 
-                    this.PastLearnings.Add(topicId, newTopic);
-
-                    //Ei toimi object initializer
-                    //Topic newTopic = new Topic(
-                    //        id = topicId,
-                    //        Title = topicParameters[9],
-                    //        Description = topicParameters[10],
-                    //        EstimatedTimeToMaster = Convert.ToDouble(topicParameters[0]),
-                    //        Source = topicParameters[2],
-                    //        StartLearningDate = Convert.ToDateTime(topicParameters[3]),
-                    //        InProgress = Convert.ToBoolean(topicParameters[4]),
-                    //        CompletionDate = Convert.ToDateTime(topicParameters[5]),
-                    //        AlreadyStudied = Convert.ToBoolean(topicParameters[6])
-                    //        );
 
                 }
 
+            }
+            foreach (Topic item in this.PastLearnings.Values)
+            {
+                Console.WriteLine(item);
             }
         }
 

@@ -40,35 +40,39 @@ namespace LearningDiary
 
         }
 
-        public List<string[]> GetAll()
+        public List<Dictionary<string,string>> GetAll()
         {
             string[] fileContent = ReadAllLinesFromFile(this.FilePath);
-            List<string[]> diaryItems = new List<string[]>();
+            List<Dictionary<string, string>> diaryItems = new List<Dictionary<string, string>>();
             //check if any data besides header row
             if (fileContent.Length > 1)
             {
-                int i = 0;
-                foreach (string row in fileContent)
+                string[] headerRow = fileContent[0].Split(";");
+                for (int j = 0; j < fileContent.Length; j++)
                 {
-                    //skip header
-                    if (i == 0)
+                    if (j == 0)
                     {
-                        i++;
                         continue;
                     }
-                    string[] separatedFields = row.Split(";");
-                    diaryItems.Add(separatedFields);
+                    string[] separatedFields = fileContent[j].Split(";");
+                    Dictionary<string, string> fieldsAndValues = new Dictionary<string, string>();
+
+                    for (int i = 0; i < separatedFields.Length; i++)
+                    {
+                        fieldsAndValues.Add(headerRow[i], separatedFields[i]);
+                    }
+                    diaryItems.Add(fieldsAndValues);
                 }
                 return diaryItems;
             }
             else
             {
-                return new List<string[]>();
+                return new List<Dictionary<string, string>>();
 
             }
         }
 
-        private string[] ReadAllLinesFromFile(string filepath)
+        private static string[] ReadAllLinesFromFile(string filepath)
         {
 
             if (File.Exists(filepath))
@@ -84,7 +88,7 @@ namespace LearningDiary
 
         }
 
-        private void SaveLineToFile(string filepath, string text)
+        private static void SaveLineToFile(string filepath, string text)
         {
             if (!File.Exists(filepath))
             {

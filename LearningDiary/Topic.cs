@@ -33,16 +33,20 @@ namespace LearningDiary
 
         public List<Task> TasksRelatedToTopic { get; set; }
 
-        public Topic() { }
-        public Topic(int id, string title, string description, double estimatedTimeToMaster, string source, 
-            DateTime StartLearningDate, bool InProgress, DateTime CompletionDate, bool AlreadyStudied) : base(id, title, description)
-        {
-            this.EstimatedTimeToMaster = estimatedTimeToMaster;
-            this.Source = source;
-            this.InProgress = false;
-            this.AlreadyStudied = false;
-            this.TasksRelatedToTopic = new List<Task>();
-        }
+        public Topic(): base() { } 
+        //public Topic(int id, string title, string description, double estimatedTimeToMaster, string source, 
+        //    DateTime StartLearningDate, bool InProgress, DateTime CompletionDate, bool AlreadyStudied) : base(id, title, description)
+        //{
+        //    this.TasksRelatedToTopic = new List<Task>();
+        //    Console.WriteLine(this.TasksRelatedToTopic);
+        //    this.EstimatedTimeToMaster = estimatedTimeToMaster;
+        //    this.Source = source;
+        //    this.StartLearningDate = StartLearningDate;
+        //    this.InProgress = false;
+        //    this.CompletionDate = CompletionDate;
+        //    this.AlreadyStudied = false;
+        //    
+        //}
         public Topic(int id, string title, string description, double estimatedTimeToMaster, string source) : base(id, title, description)
         {
             this.EstimatedTimeToMaster = estimatedTimeToMaster;
@@ -70,6 +74,11 @@ namespace LearningDiary
                 this.InProgress = false;
                 this.AlreadyStudied = true;
             }
+        }
+
+        public override string ToString()
+        {
+            return $"{this.id},{this.Title},{this.Description},{this.EstimatedTimeToMaster},{this.Source},{this.StartLearningDate},{this.InProgress},{this.CompletionDate},{this.AlreadyStudied}";
         }
     }
 }

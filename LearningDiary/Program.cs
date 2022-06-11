@@ -5,7 +5,9 @@ namespace LearningDiary
     {
         static void Main(string[] args)
         {
-            Console.SetWindowSize(260, 40);
+            //Console.SetWindowSize(260, 40);
+            Console.CursorVisible = false;
+            
             
             string topicPath = @"C:\Users\Sampsa\source\repos\LearningDiary\LearningDiary\topics.csv";
             string taskPath = @"C:\Users\Sampsa\source\repos\LearningDiary\LearningDiary\tasks.csv";
@@ -14,11 +16,11 @@ namespace LearningDiary
 
             LearningDiary Wk32diaryrepo = new LearningDiary(TopicFileRepository,TaskFileRepository);
 
-            Wk32diaryrepo.AddTopicToDiary("testi", "testi", 10, "web");
-            Wk32diaryrepo.StartTopicById(0);
-
-            Wk32diaryrepo.AddTopicToDiary("testi12345", "testi98765", 10, "web");
-            Wk32diaryrepo.StartTopicById(1);
+            //Wk32diaryrepo.AddTopicToDiary("testi", "testi", 10, "web");
+            //Wk32diaryrepo.StartTopicById(0);
+            //
+            //Wk32diaryrepo.AddTopicToDiary("testi12345", "testi98765", 10, "web");
+            //Wk32diaryrepo.StartTopicById(1);
 
             LearningDiaryUI ConterllerAndUi = new LearningDiaryUI(Wk32diaryrepo);
 

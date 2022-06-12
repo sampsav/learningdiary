@@ -294,5 +294,10 @@ namespace LearningDiary
             return String.Format("|{0,-21}|", strToFormat);
         }
 
+        private static void PrintHeading(LearningDiaryItem item)
+        {
+            Collection nameOfProperties = 
+        }
+
     }
 }

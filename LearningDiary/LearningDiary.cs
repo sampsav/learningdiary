@@ -6,7 +6,8 @@ namespace LearningDiary
     class LearningDiary
     {
         //Yritetty tehdä siten, että ohjelmaa voisi laajentaa tulevina viikkoina modulaarisesti -> katsotaan onnistuuko
-        //Tukee kaikkien topicien ja taskien lukua "kannasta" sekä uusien topicien ja taskien kirjoituksen "kantaan"
+        //UI:n toteutus hieman rajoittunut C# kirjaston rajoittuneisuuden takia. Tarvitsisi jonkun paremman framwork ncurses tjs.p
+        //Tukee kaikkien topicien "kannasta" sekä uusien topicien kirjoituksen "kantaan"
         //Updatejen tekeminen TODO listalla. Onnistuu helpommin oikealla tietokannalla
 
         private Dictionary<int, Topic> PastLearnings;
@@ -70,14 +71,7 @@ namespace LearningDiary
 
                         Console.WriteLine(e);
                     }
-
-
                 }
-
-            }
-            foreach (Topic item in this.PastLearnings.Values)
-            {
-                Console.WriteLine(item);
             }
         }
 
@@ -86,7 +80,7 @@ namespace LearningDiary
         public void AddTopicToDiary(string title, string description, double estimatedTimeToMaster, string source)
         {
             //Unique ID generointi kannan vastuulle?
-            int topicId = PastLearnings.Count;
+            int topicId = PastLearnings.Count+1;
 
             AddTopicToDiary(topicId, title, description, estimatedTimeToMaster, source);
 

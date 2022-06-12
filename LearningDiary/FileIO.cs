@@ -24,7 +24,7 @@ namespace LearningDiary
             }
             //remove last ;
             csvLineToWrite = tempcsvLineToWrite.Remove(tempcsvLineToWrite.Length - 1);
-            Console.WriteLine(csvLineToWrite);
+            Console.WriteLine("Saving following line to file\n" + csvLineToWrite);
             SaveLineToFile(this.FilePath, csvLineToWrite);
 
         }

@@ -34,19 +34,6 @@ namespace LearningDiary
         public List<Task> TasksRelatedToTopic { get; set; }
 
         public Topic(): base() { } 
-        //public Topic(int id, string title, string description, double estimatedTimeToMaster, string source, 
-        //    DateTime StartLearningDate, bool InProgress, DateTime CompletionDate, bool AlreadyStudied) : base(id, title, description)
-        //{
-        //    this.TasksRelatedToTopic = new List<Task>();
-        //    Console.WriteLine(this.TasksRelatedToTopic);
-        //    this.EstimatedTimeToMaster = estimatedTimeToMaster;
-        //    this.Source = source;
-        //    this.StartLearningDate = StartLearningDate;
-        //    this.InProgress = false;
-        //    this.CompletionDate = CompletionDate;
-        //    this.AlreadyStudied = false;
-        //    
-        //}
         public Topic(int id, string title, string description, double estimatedTimeToMaster, string source) : base(id, title, description)
         {
             this.EstimatedTimeToMaster = estimatedTimeToMaster;

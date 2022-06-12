@@ -50,11 +50,6 @@ namespace LearningDiary
 
                 }
 
-                else if (command == "4")
-                {
-                    command = Console.ReadLine();
-                }
-
             }
         }
 
@@ -73,10 +68,10 @@ namespace LearningDiary
             int menuRowCount = topicObjects.Count;
             int currentMenuItem = 1;
             bool updateLoop = true;
-            Console.WriteLine("Usage Instructions:\nDownArrow: Cycle topic list, S: Start selected topic, F: Finish selected topic, A: Add task to selected topic, E:Exit to main menu\n");
+            Console.WriteLine("Usage Instructions:\nArrows: Cycle topic list, S: Start selected topic, F: Finish selected topic, A: Add task to selected topic, E:Exit to main menu\n");
             PrintHeading(topicObjects[0]);
+            Console.WriteLine("");
             (int cursorInitialLeftPos, int cursorInitialTopPos) = Console.GetCursorPosition();
-            //Interaktiivinen menurakenne topicien valintaan ja manipulointiin. Vain nuolialas tuettuna
             while (updateLoop)
             {
                 //non blocking input
@@ -87,6 +82,7 @@ namespace LearningDiary
                     {
                         case ConsoleKey.UpArrow:
 
+                            currentMenuItem--;
                             if(currentMenuItem < 1)
                             {
                                 currentMenuItem = menuRowCount;
@@ -94,25 +90,17 @@ namespace LearningDiary
                                 while (Console.KeyAvailable)
                                     Console.ReadKey(false);
                             }
-
-                            else
-                            {
-                                currentMenuItem--;
-                            }
                             break;
 
                         case ConsoleKey.DownArrow:
 
+                            currentMenuItem++;
                             if (currentMenuItem > menuRowCount)
                             {
 
                                 currentMenuItem = 1;
                                 while (Console.KeyAvailable)
                                     Console.ReadKey(false);
-                            }
-                            else
-                            {
-                                currentMenuItem++;
                             }
                             break;
 
@@ -127,8 +115,11 @@ namespace LearningDiary
                         case ConsoleKey.A:
                             try
                             {
+                                Console.Clear();
+                                Console.Write("");
                                 List<string> topicParameters = AskTaskParameters();
                                 this.ObjectStorage.AddTaskToTopic(topicObjects[currentMenuItem - 1].id, topicParameters[0], topicParameters[1], topicParameters[2], DateTime.Parse(topicParameters[3]));
+                                Console.Clear();
                             }
                             catch (Exception e)
                             {
@@ -147,6 +138,7 @@ namespace LearningDiary
 
                 topicObjects = this.ObjectStorage.GetAllTopics();
                 DrawTopicTable(cursorInitialLeftPos, cursorInitialTopPos, currentMenuItem, topicObjects);
+                //Vähennä ruudun välkkymistä, mutta aiheuttaa lagia näppäinkomentoihin
                 Thread.Sleep(40);
                 
             }
@@ -155,15 +147,15 @@ namespace LearningDiary
         private static void DrawTopicTable(int tableStartLeft, int tableStartTop, int selectedRow, List<Topic> topics)
         {
             //Kursori aina samaan paikkaan piirron alussa
-            Console.SetCursorPosition(tableStartLeft, tableStartTop);
             int rowsToDraw = topics.Count;
-            int rowBeingDrawn = tableStartTop;
-            int currentRow = 1;
+            int consoleRowBeingDrawn = tableStartTop;
+            int currentLogicalRow = 1;
             bool colorThisRow;
-            //var stringBuilder = new StringBuilder();
             foreach (Topic item in topics)
             {
-                if (currentRow == selectedRow)
+                //Jos ikkunaa scrollaa ja yrittää asettaa cursoria näkyvän osan ulkopuolelle SetCursorPosition metodi asettaa origon scrollatun ikkunan mukaisesti
+                Console.SetCursorPosition(0, consoleRowBeingDrawn);
+                if (currentLogicalRow == selectedRow)
                 {
                     colorThisRow = true;
                 }
@@ -172,20 +164,19 @@ namespace LearningDiary
                     colorThisRow = false;
                 }
                 PrintLearningTopicRow(item, colorThisRow);
-                Console.SetCursorPosition(tableStartLeft, rowBeingDrawn);
-                rowBeingDrawn++;
-                if (rowsToDraw == currentRow)
+                if (rowsToDraw == currentLogicalRow)
                 {
-                    return;
+                    return;   
                 }
-                currentRow++;
+                consoleRowBeingDrawn++;
+                currentLogicalRow++;
             }
         }
 
         private static void PrintLearningTopicRow(Topic item, bool colorRow)
         {
             var stringBuilder = new StringBuilder();
-            string str = "";
+            Console.Write(Console.CursorLeft);
             foreach (var property in item.GetType().GetProperties())
             {
                 string prop = property.GetValue(item).ToString();

@@ -9,10 +9,11 @@ namespace LearningDiary
     {
 
         public LearningDiary ObjectStorage;
-
+        public string searhcstr;
         public LearningDiaryUI(LearningDiary objectStorage)
         {
             this.ObjectStorage = objectStorage;
+            this.searhcstr = "";
         }
 
         public void Execute()
@@ -68,10 +69,11 @@ namespace LearningDiary
             int menuRowCount = topicObjects.Count;
             int currentMenuItem = 1;
             bool updateLoop = true;
-            Console.WriteLine("Usage Instructions:\nArrows: Cycle topic list, S: Start selected topic, F: Finish selected topic, A: Add task to selected topic, E:Exit to main menu\n");
+            Console.WriteLine("Usage Instructions:\nArrows: Cycle topic list, S: Start selected topic, F: Finish selected topic, A: Add task to selected topic, E:Exit to main menu, Q: activate topic search mode\n");
             PrintHeading(topicObjects[0]);
             Console.WriteLine("");
             (int cursorInitialLeftPos, int cursorInitialTopPos) = Console.GetCursorPosition();
+            bool searchModeActive = false;
             while (updateLoop)
             {
                 //non blocking input
@@ -111,7 +113,11 @@ namespace LearningDiary
                         case ConsoleKey.F:
                             topicObjects[currentMenuItem - 1].FinishLearning();
                             break;
-
+                        case ConsoleKey.Q:
+                            Console.Clear();
+                            PrintHeading(topicObjects[0]);
+                            searchModeActive = true;
+                            break;
                         case ConsoleKey.A:
                             try
                             {
@@ -136,11 +142,62 @@ namespace LearningDiary
                     }
                 }
 
+                if (searchModeActive == true)
+                {
+                    Thread t = new Thread(new ThreadStart(ThreadInputTest));
+                    t.Start();
+                    while (true)
+                    {
+                        int unfilteredTopicListLength = this.ObjectStorage.GetAllTopics().Count;
+                        List<Topic> filteredTopicObjects = this.ObjectStorage.GetAllTopicsTitlesMatching(this.searhcstr);
+                       // if (filteredTopicObjects.Count == 0)
+                       // {
+                       //     Console.Clear();
+                        //    Console.WriteLine("tyhjä");
+                       // }
+                        
+                        
+                        DrawTopicTableWithSearch(cursorInitialLeftPos, cursorInitialTopPos, currentMenuItem, filteredTopicObjects, unfilteredTopicListLength);
+                        //Thread.Sleep(400);
+                        
+                    }
+                }
+
+                else
+                {
                 topicObjects = this.ObjectStorage.GetAllTopics();
                 DrawTopicTable(cursorInitialLeftPos, cursorInitialTopPos, currentMenuItem, topicObjects);
                 //Vähennä ruudun välkkymistä, mutta aiheuttaa lagia näppäinkomentoihin
                 Thread.Sleep(40);
+
+                }
+
                 
+            }
+        }
+
+        private void ThreadInputTest()
+        {
+            while (true)
+            {
+                if (Console.KeyAvailable)
+                {
+                    ConsoleKeyInfo name = Console.ReadKey(false);
+
+
+                    if (name.Key == ConsoleKey.Backspace)
+                    {
+                        this.searhcstr = "";
+                        
+                    }
+                    else
+                    {
+                        this.searhcstr += name.KeyChar.ToString();
+                    }
+                    
+                    //Console.WriteLine(searchstr);
+
+                }
             }
         }
 
@@ -153,6 +210,7 @@ namespace LearningDiary
             bool colorThisRow;
             foreach (Topic item in topics)
             {
+                
                 //Jos ikkunaa scrollaa ja yrittää asettaa cursoria näkyvän osan ulkopuolelle SetCursorPosition metodi asettaa origon scrollatun ikkunan mukaisesti
                 Console.SetCursorPosition(0, consoleRowBeingDrawn);
                 if (currentLogicalRow == selectedRow)
@@ -166,6 +224,7 @@ namespace LearningDiary
                 PrintLearningTopicRow(item, colorThisRow);
                 if (rowsToDraw == currentLogicalRow)
                 {
+                    
                     return;   
                 }
                 consoleRowBeingDrawn++;
@@ -205,6 +264,55 @@ namespace LearningDiary
 
             Console.Write(stringBuilder.ToString());
             Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        private void DrawTopicTableWithSearch(int tableStartLeft, int tableStartTop, int selectedRow, List<Topic> topics, int unfilteredTopicListLength)
+        {
+            //Kursori aina samaan paikkaan piirron alussa
+            
+            int rowsToDraw = topics.Count;
+            int consoleRowBeingDrawn = tableStartTop;
+            int currentLogicalRow = 1;
+            bool colorThisRow;
+            int blankRowsToDraw = unfilteredTopicListLength - rowsToDraw;
+            foreach (Topic item in topics)
+            {
+                
+                //Jos ikkunaa scrollaa ja yrittää asettaa cursoria näkyvän osan ulkopuolelle SetCursorPosition metodi asettaa origon scrollatun ikkunan mukaisesti
+                Console.SetCursorPosition(0, consoleRowBeingDrawn);
+                if (currentLogicalRow == selectedRow)
+                {
+                    colorThisRow = true;
+                }
+                else
+                {
+                    colorThisRow = false;
+                }
+                PrintLearningTopicRow(item, colorThisRow);
+                if (rowsToDraw == currentLogicalRow)
+                {
+                    Console.SetCursorPosition(0, Console.WindowHeight - 10);
+
+                    if (this.searhcstr == "")
+                    {
+                        Console.Write(new string(' ', Console.BufferWidth));
+                    }
+                    else
+                    {
+                        Console.Write(this.searhcstr);
+                    }
+
+                    for (int i = consoleRowBeingDrawn+1; i <= consoleRowBeingDrawn+blankRowsToDraw; i++)
+                    {
+                        Console.SetCursorPosition(0, i);
+                        Console.Write(new string(' ', Console.BufferWidth));
+                    }
+
+                    return;
+                }
+                consoleRowBeingDrawn++;
+                currentLogicalRow++;
+            }
         }
 
 

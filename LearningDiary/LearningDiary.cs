@@ -145,6 +145,13 @@ namespace LearningDiary
             return new List<Topic>(this.PastLearnings.Values);
         }
 
+        public List<Topic> GetAllTopicsTitlesMatching(string searchPattern)
+        {
+            List<Topic> allTopics = GetAllTopics();
+            List<Topic> topicsMatchingToSearch = allTopics.FindAll(x=> x.Title.ToLower().Contains(searchPattern.ToLower()));
+            return topicsMatchingToSearch;
+        }
+
 
 
         //autogenerate taskID

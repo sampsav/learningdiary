@@ -12,6 +12,7 @@ namespace LearningDiary
             {
             // Rivien tulostus ei näytä oikealta <27" näytöllä
             Console.SetWindowSize(Console.LargestWindowWidth, 40);
+            Console.BufferHeight = 40;
             Console.BufferWidth = 280;
 
             }
@@ -23,22 +24,25 @@ namespace LearningDiary
             
             Console.CursorVisible = false;
 
-            string topicFilename = "topics.csv";
+            //string topicFilename = "topics.csv";
+            //string topicFilename = "topics.csv";
+            string topicFilename = "topics_8999lines.csv";
             string tasksFilename = "tasks.csv";
 
             //var path = System.Reflection.Assembly.GetExecutingAssembly().Location;
             string path = System.AppDomain.CurrentDomain.BaseDirectory.ToLower();
             string basePath = path.Substring(0,path.IndexOf("learningdiary"));
-            string topicPath = @$"{basePath}learningdiary\learningdiary\files\topics.csv";
-            string taskPath = @$"{basePath}learningdiary\learningdiary\files\tasks.csv";
+            string topicPath = @$"{basePath}learningdiary\learningdiary\files\{topicFilename}";
+            string taskPath = @$"{basePath}learningdiary\learningdiary\files\{tasksFilename}";
             FileIO TopicFileRepository = new FileIO(topicPath);
             FileIO TaskFileRepository = new FileIO(taskPath);
 
             LearningDiary Wk32diaryrepo = new LearningDiary(TopicFileRepository,TaskFileRepository);
+            LearningDiaryViews views = new LearningDiaryViews();
 
-            LearningDiaryUI ConterllerAndUi = new LearningDiaryUI(Wk32diaryrepo);
+            Controller LearningDiaryConterller = new Controller(views,Wk32diaryrepo);
 
-            ConterllerAndUi.Execute();
+            LearningDiaryConterller.Execute();
 
         }
     }

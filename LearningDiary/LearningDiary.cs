@@ -217,6 +217,20 @@ namespace LearningDiary
             }
         }
 
+        public void DeleteTopicById(int topicId) {
+
+            if (this.PastLearnings.Remove(topicId))
+            {
+                return;
+            }
+            else
+            {
+                throw new ArgumentException($"Topic with, topicid = {topicId} not removed");
+            }
+        
+        }
+
+
         public List<Task> GetAllTasksRelatedToTopic(int topicId)
         {
             return this.PastLearnings[topicId].TasksRelatedToTopic;

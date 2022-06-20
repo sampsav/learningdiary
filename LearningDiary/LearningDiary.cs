@@ -145,6 +145,13 @@ namespace LearningDiary
             return new List<Topic>(this.PastLearnings.Values);
         }
 
+        public List<Topic> GetAllTopicsTitlesMatching(string searchPattern)
+        {
+            List<Topic> allTopics = GetAllTopics();
+            List<Topic> topicsMatchingToSearch = allTopics.FindAll(x=> x.Title.ToLower().Contains(searchPattern.ToLower()));
+            return topicsMatchingToSearch;
+        }
+
 
 
         //autogenerate taskID
@@ -209,6 +216,20 @@ namespace LearningDiary
 
             }
         }
+
+        public void DeleteTopicById(int topicId) {
+
+            if (this.PastLearnings.Remove(topicId))
+            {
+                return;
+            }
+            else
+            {
+                throw new ArgumentException($"Topic with, topicid = {topicId} not removed");
+            }
+        
+        }
+
 
         public List<Task> GetAllTasksRelatedToTopic(int topicId)
         {

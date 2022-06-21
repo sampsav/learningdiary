@@ -8,25 +8,25 @@ namespace LearningDiary
         public string Title { get; set; }
         public string Description { get; set; }
         public double EstimatedTimeToMaster { get; set; }
-        public double TimeSpent
-        {
-            get
-            {
-                if (this.InProgress)
-                {
-                    return (DateTime.Now - this.StartLearningDate).TotalSeconds;
-                }
-                else if (this.AlreadyStudied)
-                {
-                    return (this.CompletionDate - this.StartLearningDate).TotalSeconds;
-                }
-                else
-                {
-                    return 0;
-                }
-            }
-            private set { }
-        }
+        public double TimeSpent { get; set; }
+        //{
+        //    get
+        //    {
+        //        if (this.InProgress)
+        //        {
+        //            return (DateTime.Now - this.StartLearningDate).TotalSeconds;
+        //        }
+        //        else if (this.AlreadyStudied)
+        //        {
+        //            return (this.CompletionDate - this.StartLearningDate).TotalSeconds;
+        //        }
+        //        else
+        //        {
+        //            return 0;
+        //        }
+        //    }
+        //    private set { }
+        //}
         public string Source { get; set; }
         public DateTime StartLearningDate { get; set; }
         public bool InProgress { get; set; }

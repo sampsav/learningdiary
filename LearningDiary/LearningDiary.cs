@@ -12,10 +12,6 @@ namespace LearningDiary
         public LearningDiary()
         {
             string dbAddress = @"Server=DESKTOP-7BQQ30N\MSSQLSERVER2\;Database=LearningDiary;Trusted_Connection=True;MultipleActiveResultSets=true";
-
-            using (var ctx = new LearningDiaryContext()) {
-                ctx.Topics.Add(learningTopic);
-            }
         }
 
         //private void LoadAllTopicsFromStorage()

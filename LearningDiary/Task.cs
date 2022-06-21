@@ -2,27 +2,30 @@
 
 namespace LearningDiary
 {
-    class Task : LearningDiaryItem
+    class Task
     {
-
-        public int TopicId { get; set; }
+        public int TaskId { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
         public string Notes { get; set; }
         public DateTime Deadline { get; set; }
         public enum Priority {high,low};
         public bool Done { get; set; }
 
-        public Task(int id, string title, string description, string notes, DateTime deadline) : base(id, title, description)
-        {
-            this.Notes = notes;
-            this.Deadline = deadline;
-        }
 
-        public Task(int id, int topicId, string title, string description, string notes, DateTime deadline) : base(id, title, description)
-        {
-            this.TopicId = topicId;
-            this.Notes = notes;
-            this.Deadline = deadline;
-        }
+        public Task() { }
+        //public Task(int id, string title, string description, string notes, DateTime deadline)
+        //{
+        //    this.Notes = notes;
+        //    this.Deadline = deadline;
+        //}
+        //
+        //public Task(int id, int topicId, string title, string description, string notes, DateTime deadline)
+        //{
+        //    this.TopicId = topicId;
+        //    this.Notes = notes;
+        //    this.Deadline = deadline;
+        //}
 
 
         public void FinishTask()

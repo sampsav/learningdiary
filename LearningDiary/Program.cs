@@ -24,6 +24,10 @@ namespace LearningDiary
             
             Console.CursorVisible = false;
 
+            string dbAddress = @"Server=DESKTOP-7BQQ30N\MSSQLSERVER2\;Database=LearningDiary;Trusted_Connection=True;MultipleActiveResultSets=true";
+
+
+
             //string topicFilename = "topics.csv";
             //string topicFilename = "topics.csv";
             string topicFilename = "topics_8999lines.csv";

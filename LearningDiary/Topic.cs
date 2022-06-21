@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 namespace LearningDiary
 {
-    class Topic : LearningDiaryItem
+    class Topic
     {
+        public int TopicId { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
         public double EstimatedTimeToMaster { get; set; }
-
         public double TimeSpent
         {
             get
@@ -31,17 +33,18 @@ namespace LearningDiary
         public DateTime CompletionDate { get; set; }
         public bool AlreadyStudied { get; set; }
 
-        public List<Task> TasksRelatedToTopic { get; set; }
+        public ICollection<Task> Tasks { get; } = new List<Task>();
 
-        public Topic(): base() { } 
-        public Topic(int id, string title, string description, double estimatedTimeToMaster, string source) : base(id, title, description)
-        {
-            this.EstimatedTimeToMaster = estimatedTimeToMaster;
-            this.Source = source;
-            this.InProgress = false;
-            this.AlreadyStudied = false;
-            this.TasksRelatedToTopic = new List<Task>();
-        }
+        public Topic() { } 
+
+        //public Topic(int id, string title, string description, double estimatedTimeToMaster, string source) : base(id, title, description)
+        //{
+        //    this.EstimatedTimeToMaster = estimatedTimeToMaster;
+        //    this.Source = source;
+        //    this.InProgress = false;
+        //    this.AlreadyStudied = false;
+        //    this.TasksRelatedToTopic = new List<Task>();
+        //}
 
         public void StartLearning()
         {
@@ -63,9 +66,5 @@ namespace LearningDiary
             }
         }
 
-        public override string ToString()
-        {
-            return $"{this.id},{this.Title},{this.Description},{this.EstimatedTimeToMaster},{this.Source},{this.StartLearningDate},{this.InProgress},{this.CompletionDate},{this.AlreadyStudied}";
-        }
     }
 }

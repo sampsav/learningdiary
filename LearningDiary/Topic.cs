@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 namespace LearningDiary
 {
-    class Topic
+    public class Topic
     {
         public int TopicId { get; set; }
         public string Title { get; set; }

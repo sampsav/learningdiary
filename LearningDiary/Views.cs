@@ -4,7 +4,7 @@ using System.Text;
 
 namespace LearningDiary
 {
-    class LearningDiaryViews
+    public class LearningDiaryViews
     {
 
 
@@ -72,7 +72,7 @@ namespace LearningDiary
 
                 if (prop.IndexOf("Task") != -1)
                 {
-                    stringBuilder.Append(StringFormatterToTable(item.TasksRelatedToTopic.Count.ToString()));
+                    stringBuilder.Append(StringFormatterToTable(item.Tasks.Count.ToString()));
                 }
 
                 else if (property.Name.IndexOf("TimeSpent") != -1)
@@ -202,7 +202,7 @@ namespace LearningDiary
 
         }
 
-        private static void PrintHeading(LearningDiaryItem item)
+        private static void PrintHeading(object item)
         {
             const string UNDERLINE = "\x1B[4m";
             const string RESET = "\x1B[0m";

@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace LearningDiary
 {
-    class Controller
+    public class Controller
     {
 
         public LearningDiary ObjectStorage;
@@ -71,7 +71,7 @@ namespace LearningDiary
                 if (currentMenuItem >= 0 && currentMenuItem < filteredTopics.Count)
                 {
                     menuRowCount = filteredTopics.Count - 1;
-                    selectedTopicId = filteredTopics[currentMenuItem].id;
+                    selectedTopicId = filteredTopics[currentMenuItem].TopicId;
                 }
                 else if (filteredTopics.Count == 0)
                 {

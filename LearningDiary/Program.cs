@@ -24,9 +24,9 @@ namespace LearningDiary
             
             Console.CursorVisible = false;
 
-            string dbAddress = @"Server=DESKTOP-7BQQ30N\MSSQLSERVER2\;Database=LearningDiary;Trusted_Connection=True;MultipleActiveResultSets=true";
+            
 
-
+            
 
             //string topicFilename = "topics.csv";
             //string topicFilename = "topics.csv";
@@ -41,12 +41,12 @@ namespace LearningDiary
             FileIO TopicFileRepository = new FileIO(topicPath);
             FileIO TaskFileRepository = new FileIO(taskPath);
 
-            LearningDiary Wk32diaryrepo = new LearningDiary(TopicFileRepository,TaskFileRepository);
-            LearningDiaryViews views = new LearningDiaryViews();
+            LearningDiary Wk32diaryrepo = new LearningDiary();
+            //LearningDiaryViews views = new LearningDiaryViews();
 
-            Controller LearningDiaryConterller = new Controller(views,Wk32diaryrepo);
+           // Controller LearningDiaryConterller = new Controller(views,Wk32diaryrepo);
 
-            LearningDiaryConterller.Execute();
+            //LearningDiaryConterller.Execute();
 
         }
     }

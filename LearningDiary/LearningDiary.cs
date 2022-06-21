@@ -5,11 +5,7 @@ namespace LearningDiary
 {
     class LearningDiary
     {
-        //Yritetty tehdä siten, että ohjelmaa voisi laajentaa tulevina viikkoina modulaarisesti -> katsotaan onnistuuko
-        //UI:n toteutus hieman rajoittunut C# kirjaston rajoittuneisuuden takia. Tarvitsisi jonkun paremman framwork ncurses tjs.p
-        //Tukee kaikkien topicien "kannasta" sekä uusien topicien kirjoituksen "kantaan"
-        //Updatejen tekeminen TODO listalla. Onnistuu helpommin oikealla tietokannalla
-
+      
         private Dictionary<int, Topic> PastLearnings;
         private Dictionary<int, Task> TasksWithoutTopic;
         private HashSet<int> TaskIdList;

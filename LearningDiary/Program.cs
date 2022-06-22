@@ -42,6 +42,11 @@ namespace LearningDiary
             FileIO TaskFileRepository = new FileIO(taskPath);
 
             LearningDiary Wk32diaryrepo = new LearningDiary();
+
+            Wk32diaryrepo.AddTopicToDiary("testi", "testi3", 10, "web");
+
+            //Wk32diaryrepo.StartTopicById(1);
+            Wk32diaryrepo.FinishTopicById(1);
             //LearningDiaryViews views = new LearningDiaryViews();
 
            // Controller LearningDiaryConterller = new Controller(views,Wk32diaryrepo);

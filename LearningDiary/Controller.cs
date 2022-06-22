@@ -16,7 +16,7 @@ namespace LearningDiary
         {
             this.Views = views;
             this.ObjectStorage = objectStorage;
-            this.searhcstr = "admin";
+            this.searhcstr = "";
         }
 
         public void Execute()

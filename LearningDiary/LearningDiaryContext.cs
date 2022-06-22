@@ -11,8 +11,23 @@ namespace LearningDiary
     public class LearningDiaryContext : DbContext 
     {
 
-        public LearningDiaryContext(DbContextOptions<LearningDiaryContext> options) : base(options)
+        public LearningDiaryContext()
         { 
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            string dbConfigStr = @"Server=DESKTOP-7BQQ30N\MSSQLSERVER2;Database=LearningDiary;Trusted_Connection=True;MultipleActiveResultSets=true";
+            optionsBuilder.UseSqlServer(dbConfigStr);
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder
+                .Entity<Topic>()
+                .Property(e => e.TimeSpent)
+                .UsePropertyAccessMode(PropertyAccessMode.Property);
+
         }
 
         public DbSet<Topic> Topics { get; set; }

@@ -58,34 +58,66 @@ namespace LearningDiary
 
         public void AddTopicToDiary(string title, string description, double estimatedTimeToMaster, string source)
         {
-            Topic newTopic = new Topic()
+
+            using (var context = new LearningDiaryContext())
             {
-                Title = title,
-                Description = description,
-                EstimatedTimeToMaster = estimatedTimeToMaster,
-                Source = source,
-                StartLearningDate = DateTime.MinValue,
-                InProgress = false,
-                CompletionDate = DateTime.MinValue,
-                AlreadyStudied = false,
-            };
-        }
+                Topic newTopic = new Topic()
+                {
+                    Title = title,
+                    Description = description,
+                    EstimatedTimeToMaster = estimatedTimeToMaster,
+                    Source = source,
+                    StartLearningDate = DateTime.MinValue,
+                    InProgress = false,
+                    CompletionDate = DateTime.MinValue,
+                    AlreadyStudied = false,
+                };
+                context.Topics.Add(newTopic);
+                context.SaveChanges();
+            }
+            }
 
         public void StartTopicById(int topicId)
         {
+            using (var context = new LearningDiaryContext())
+            {
+
+                Topic dbTopic = context.Topics.Find(topicId);
+                if (dbTopic == null)
+                {
+                    throw new ArgumentException($"No topic with id {topicId}");
+                }
+                else { 
+                
+                dbTopic.StartLearning();
+                context.SaveChanges();
+                
+                }
+            }
+
         }
 
         public void FinishTopicById(int topicId)
         {
-        }
 
-        public Topic GetTopicById(int topicId)
-        {
-            return new Topic();
+            using (var context = new LearningDiaryContext())
+            {
+
+                Topic dbTopic = context.Topics.Find(topicId);
+                dbTopic.FinishLearning();
+                context.SaveChanges();
+            }
+
         }
 
         public void DeleteTopicById(int topicId)
         {
+            
+            //using (var context = new LearningDiaryContext()) { 
+            //
+            //    context.Remove(
+            //
+            //}
         }
 
         public List<Topic> GetAllTopics()
@@ -100,8 +132,6 @@ namespace LearningDiary
             List<Topic> topicsMatchingToSearch = allTopics.FindAll(x=> x.Title.ToLower().Contains(searchPattern.ToLower()));
             return topicsMatchingToSearch;
         }
-
-
 
         //autogenerate taskID
         //public void AddTaskToTopic(int topicId, string title, string description, string notes, DateTime deadline)

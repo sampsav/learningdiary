@@ -4,14 +4,16 @@ using LearningDiary;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LearningDiary.Migrations
 {
     [DbContext(typeof(LearningDiaryContext))]
-    partial class LearningDiaryContextModelSnapshot : ModelSnapshot
+    [Migration("20220622103751_2ndMigration")]
+    partial class _2ndMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -88,21 +90,6 @@ namespace LearningDiary.Migrations
                     b.HasKey("TopicId");
 
                     b.ToTable("Topics");
-
-                    b.HasData(
-                        new
-                        {
-                            TopicId = 1,
-                            AlreadyStudied = false,
-                            CompletionDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "testi",
-                            EstimatedTimeToMaster = 10.0,
-                            InProgress = false,
-                            Source = "web",
-                            StartLearningDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            TimeSpent = 0.0,
-                            Title = "testi"
-                        });
                 });
 
             modelBuilder.Entity("LearningDiary.Task", b =>

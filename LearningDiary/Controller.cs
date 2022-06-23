@@ -16,7 +16,7 @@ namespace LearningDiary
         {
             this.Views = views;
             this.ObjectStorage = objectStorage;
-            this.searhcstr = "";
+            this.searhcstr = "testi";
         }
 
         public void Execute()
@@ -28,10 +28,9 @@ namespace LearningDiary
         {
             Console.Clear();
             int printableVisibleRows = 36;
-            List<Topic> topicObjects = this.ObjectStorage.GetAllTopics();
-            List<Topic> filteredTopics = GetFilteredTopicList(topicObjects, this.searhcstr, printableVisibleRows);
+            List<Topic> filteredTopics = this.ObjectStorage.GetAllTopicsTitlesMatching(this.searhcstr, printableVisibleRows);
 
-            if (topicObjects.Count == 0)
+            if (filteredTopics.Count == 0)
             {
                 Console.WriteLine("No Topics in Learning Diary");
                 Thread.Sleep(5000);
@@ -62,7 +61,7 @@ namespace LearningDiary
 
                     (cursorTopicSearcLeftPosition, cursorTopicSearchTopPosition) = Console.GetCursorPosition();
 
-                    this.Views.PrintHeadingRow(topicObjects);
+                    this.Views.PrintHeadingRow(filteredTopics);
                     (cursorInitialLeftPos, cursorInitialTopPos) = Console.GetCursorPosition();
                     printableVisibleRows = Console.BufferHeight - cursorInitialTopPos;
                     printHeaderAndInstructions = false;
@@ -174,8 +173,7 @@ namespace LearningDiary
                 else
                 {
 
-                    topicObjects = this.ObjectStorage.GetAllTopics();
-                    filteredTopics = GetFilteredTopicList(topicObjects, this.searhcstr, printableVisibleRows);
+                    filteredTopics = this.ObjectStorage.GetAllTopicsTitlesMatching(this.searhcstr, printableVisibleRows);
 
                     if (filteredTopics.Count > 0)
                     {

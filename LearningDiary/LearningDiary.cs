@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace LearningDiary
 {
     public class LearningDiary
     {
 
-        public LearningDiaryContext ctx;
       
         public LearningDiary()
         {
-            string dbAddress = @"Server=DESKTOP-7BQQ30N\MSSQLSERVER2\;Database=LearningDiary;Trusted_Connection=True;MultipleActiveResultSets=true";
         }
 
         //private void LoadAllTopicsFromStorage()
@@ -104,8 +103,15 @@ namespace LearningDiary
             {
 
                 Topic dbTopic = context.Topics.Find(topicId);
+                if (dbTopic == null)
+                {
+                    throw new ArgumentException($"No topic with id {topicId}");
+                }
+                else { 
+                
                 dbTopic.FinishLearning();
                 context.SaveChanges();
+                }
             }
 
         }
@@ -120,17 +126,32 @@ namespace LearningDiary
             //}
         }
 
-        public List<Topic> GetAllTopics()
+        public List<Topic> GetScreenBufferAmountOfTopics(int sizeOfScreenBuffer)
         {
-            return new List<Topic>();
-        
+            using (var context = new LearningDiaryContext())
+            {
+
+                List<Topic> topics = context.Topics
+                        .Include(e => e.Tasks)
+                        .AsNoTracking()
+                        .Take(sizeOfScreenBuffer)
+                        .ToList();
+                return topics;
+            }
         }
 
-        public List<Topic> GetAllTopicsTitlesMatching(string searchPattern)
+        public List<Topic> GetAllTopicsTitlesMatching(string searchPattern, int sizeOfScreenBuffer)
         {
-            List<Topic> allTopics = GetAllTopics();
-            List<Topic> topicsMatchingToSearch = allTopics.FindAll(x=> x.Title.ToLower().Contains(searchPattern.ToLower()));
+            using (var context = new LearningDiaryContext()) { 
+            
+            List<Topic> topicsMatchingToSearch = context.Topics
+                    .Include(e => e.Tasks)
+                    .AsNoTracking()
+                    .Where(x=> x.Title.ToLower().Contains(searchPattern.ToLower()))
+                    .Take(sizeOfScreenBuffer)
+                    .ToList();
             return topicsMatchingToSearch;
+            }
         }
 
         //autogenerate taskID

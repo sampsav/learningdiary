@@ -23,11 +23,18 @@ namespace LearningDiary
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //soft delete
+            modelBuilder.Entity<Topic>()
+                        .HasQueryFilter(e => !e.Deleted);
+
             modelBuilder
                 .Entity<Topic>()
                 .Property(e => e.TimeSpent)
                 .UsePropertyAccessMode(PropertyAccessMode.Property);
 
+            //soft delete
+            modelBuilder.Entity<Task>()
+                        .HasQueryFilter(e => !e.Deleted);
         }
 
         public DbSet<Topic> Topics { get; set; }

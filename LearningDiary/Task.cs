@@ -12,7 +12,7 @@ namespace LearningDiary
         public enum Priority {high,low};
         public bool Done { get; set; }
 
-        public boold Deleted { get; set; }
+        public bool Deleted { get; set; }
 
         public Task() { }
         //public Task(int id, string title, string description, string notes, DateTime deadline)

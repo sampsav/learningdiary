@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IO;
+
 
 namespace LearningDiary
 {
@@ -10,30 +10,27 @@ namespace LearningDiary
 
             try
             {
-            // Rivien tulostus ei näytä oikealta <27" näytöllä
-            Console.SetWindowSize(Console.LargestWindowWidth, 40);
-            Console.BufferHeight = 40;
-            Console.BufferWidth = 280;
+                // Rivien tulostus ei näytä oikealta <27" näytöllä
+                Console.SetWindowSize(Console.LargestWindowWidth, 40);
+                Console.BufferHeight = 40;
+                Console.BufferWidth = 280;
 
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                
+
             }
-            
+
             Console.CursorVisible = false;
 
-            
-
-            
 
             //string topicFilename = "topics.csv";
             //string topicFilename = "topics.csv";
             string topicFilename = "topics_8999lines.csv";
             string tasksFilename = "tasks.csv";
             string path = System.AppDomain.CurrentDomain.BaseDirectory.ToLower();
-            string basePath = path.Substring(0,path.IndexOf("learningdiary"));
+            string basePath = path.Substring(0, path.IndexOf("learningdiary"));
             string topicPath = @$"{basePath}learningdiary\learningdiary\files\{topicFilename}";
             string taskPath = @$"{basePath}learningdiary\learningdiary\files\{tasksFilename}";
 
@@ -46,10 +43,24 @@ namespace LearningDiary
             Wk32diaryrepo.AddTopicToDiary("testi", "testi3", 10, "web");
             LearningDiaryViews views = new LearningDiaryViews();
 
-            Controller LearningDiaryConterller = new Controller(views,Wk32diaryrepo);
+            Controller LearningDiaryConterller = new Controller(views, Wk32diaryrepo);
 
             LearningDiaryConterller.Execute();
 
         }
+
+        public static void UndoTopicDeletion()
+        {
+            using (var context = new LearningDiaryContext())
+            {
+                var commandText = @"UPDATE dbo.Topics
+                                    SET DELETED = 0
+                                    WHERE DELETED = 1";
+
+                //context.  ExecuteSqlCommand(commandText);
+
+            }
+        }
+
     }
 }

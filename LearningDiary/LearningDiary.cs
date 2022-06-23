@@ -118,12 +118,22 @@ namespace LearningDiary
 
         public void DeleteTopicById(int topicId)
         {
-            
-            //using (var context = new LearningDiaryContext()) { 
-            //
-            //    context.Remove(
-            //
-            //}
+            using (var context = new LearningDiaryContext())
+            {
+
+                Topic dbTopic = context.Topics.Find(topicId);
+                if (dbTopic == null)
+                {
+                    throw new ArgumentException($"No topic with id {topicId}");
+                }
+                else
+                {
+
+                    dbTopic.Deleted = true;
+                    context.SaveChanges();
+                }
+            }
+
         }
 
         public List<Topic> GetScreenBufferAmountOfTopics(int sizeOfScreenBuffer)

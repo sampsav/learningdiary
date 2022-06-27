@@ -13,48 +13,6 @@ namespace LearningDiary
         {
         }
 
-        //private void LoadAllTopicsFromStorage()
-        //{
-        //    List<Dictionary<string,string>> allTopics = this.PersistentStorageTopics.GetAll();
-        //
-        //    foreach (Dictionary<string,string> topicParameters in allTopics)
-        //    {
-        //
-        //        int topicId = Convert.ToInt32(topicParameters["id"]);
-        //        if (this.PastLearnings.ContainsKey(topicId))
-        //        {
-        //            throw new ArgumentException($"Unique constrain violation, topicId = {topicId} not unique");
-        //        }
-        //
-        //        else
-        //        {
-        //            try
-        //            {
-        //                Topic newTopic = new Topic()
-        //                {
-        //                    TopicId = topicId,
-        //                    Title = topicParameters["Title"],
-        //                    Description = topicParameters["Description"],
-        //                    EstimatedTimeToMaster = Convert.ToDouble(topicParameters["EstimatedTimeToMaster"]),
-        //                    Source = topicParameters["Source"],
-        //                    StartLearningDate = Convert.ToDateTime(topicParameters["StartLearningDate"]),
-        //                    InProgress = Convert.ToBoolean(topicParameters["InProgress"]),
-        //                    CompletionDate = Convert.ToDateTime(topicParameters["CompletionDate"]),
-        //                    AlreadyStudied = Convert.ToBoolean(topicParameters["AlreadyStudied"]),
-        //                    TasksRelatedToTopic = new List<Task>()
-        //                  };
-        //                this.PastLearnings.Add(topicId, newTopic);
-        //            }
-        //            catch (Exception e)
-        //            {
-        //
-        //                Console.WriteLine(e);
-        //            }
-        //        }
-        //    }
-        //}
-
-
         public void AddTopicToDiary(string title, string description, double estimatedTimeToMaster, string source)
         {
 

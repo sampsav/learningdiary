@@ -16,7 +16,7 @@ namespace LearningDiary
         {
             this.Views = views;
             this.ObjectStorage = objectStorage;
-            this.searhcstr = "testi";
+            this.searhcstr = "";
         }
 
         public void Execute()
@@ -60,7 +60,7 @@ namespace LearningDiary
                     this.Views.PrintSearchInstructions();
 
                     (cursorTopicSearcLeftPosition, cursorTopicSearchTopPosition) = Console.GetCursorPosition();
-
+                    Console.Write("\n");
                     this.Views.PrintHeadingRow(filteredTopics);
                     (cursorInitialLeftPos, cursorInitialTopPos) = Console.GetCursorPosition();
                     printableVisibleRows = Console.BufferHeight - cursorInitialTopPos;
@@ -167,7 +167,7 @@ namespace LearningDiary
 
                 if (searchModeActive)
                 {
-                    //TopicSearchInput();
+                    TopicSearchModeController(cursorInitialLeftPos,cursorInitialTopPos,cursorTopicSearcLeftPosition,cursorTopicSearchTopPosition, printableVisibleRows);
                 }
 
                 else
@@ -212,54 +212,56 @@ namespace LearningDiary
 
         }
 
-        //private static void TopicSearchInput()
-        //{
-        //    Thread t = new Thread(new ThreadStart(ThreadInputTest));
-        //    t.Start();
-        //    while (true)
-        //    {
-        //        int unfilteredTopicListLength = this.ObjectStorage.GetAllTopics().Count;
-        //        List<Topic> filteredTopicObjects = this.ObjectStorage.GetAllTopicsTitlesMatching(this.searhcstr);
-        //        // if (filteredTopicObjects.Count == 0)
-        //        // {
-        //        //     Console.Clear();
-        //        //    Console.WriteLine("tyhjä");
-        //        // }
-        //    
-        //    
-        //        this.Views.DrawTopicTableWithSearch(cursorInitialLeftPos, cursorInitialTopPos, currentMenuItem, filteredTopicObjects, unfilteredTopicListLength);
-        //        //Thread.Sleep(400);
-        //    
-        //    }
-        //
-        //
-        //}
+        private void TopicSearchModeController(int cursorInitialLeftPos, int cursorInitialTopPos, int cursorTopicSearcLeftPosition, int cursorTopicSearcTopPosition, int sizeOfScreenBuffer)
+        {
+            Thread t = new Thread(new ThreadStart(ThreadInputTest));
+            t.Start();
+            while (true)
+            {
+                //int unfilteredTopicListLength = this.ObjectStorage.;
+                List<Topic> filteredTopics = this.ObjectStorage.GetAllTopicsTitlesMatching(this.searhcstr, sizeOfScreenBuffer);
+                // if (filteredTopicObjects.Count == 0)
+                // {
+                //     Console.Clear();
+                //    Console.WriteLine("tyhjä");
+                // }
 
-        //private void ThreadInputTest()
-        //{
-        //    while (true)
-        //    {
-        //        if (Console.KeyAvailable)
-        //        {
-        //            ConsoleKeyInfo name = Console.ReadKey(false);
-        //
-        //
-        //            if (name.Key == ConsoleKey.Backspace)
-        //            {
-        //                this.searhcstr = "";
-        //
-        //            }
-        //            else
-        //            {
-        //                //this.searhcstr += name.KeyChar.ToString();
-        //                this.searhcstr += "admin";
-        //            }
-        //
-        //            //Console.WriteLine(searchstr);
-        //
-        //        }
-        //    }
-        //}
+                this.Views.DrawUserSearchInputText(cursorTopicSearcLeftPosition,cursorTopicSearcTopPosition,this.searhcstr);
+                this.Views.DrawTopicTable(cursorInitialLeftPos, cursorInitialTopPos, -1, filteredTopics);
+                this.Views.WriteEmptyLines(cursorInitialTopPos + filteredTopics.Count, sizeOfScreenBuffer);
+
+
+
+            }
+        
+        
+        }
+
+        private void ThreadInputTest()
+        {
+            while (true)
+            {
+                if (Console.KeyAvailable)
+                {
+                    ConsoleKeyInfo name = Console.ReadKey(false);
+        
+        
+                    if (name.Key == ConsoleKey.Backspace)
+                    {
+                        this.searhcstr = "";
+        
+                    }
+                    else
+                    {
+                        this.searhcstr += name.KeyChar.ToString();
+                        //this.searhcstr += "admin";
+                    }
+        
+                    //Console.WriteLine(searchstr);
+        
+                }
+            }
+        }
 
 
     }

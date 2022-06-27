@@ -39,15 +39,6 @@ namespace LearningDiary
 
         public Topic() { } 
 
-        //public Topic(int id, string title, string description, double estimatedTimeToMaster, string source) : base(id, title, description)
-        //{
-        //    this.EstimatedTimeToMaster = estimatedTimeToMaster;
-        //    this.Source = source;
-        //    this.InProgress = false;
-        //    this.AlreadyStudied = false;
-        //    this.TasksRelatedToTopic = new List<Task>();
-        //}
-
         public void StartLearning()
         {
             if (!this.InProgress && !this.AlreadyStudied)

@@ -6,12 +6,11 @@ namespace LearningDiary
 {
     public class LearningDiaryViews
     {
-
-
+        public string TopicSearchStr { get; set; }
         public LearningDiaryViews()
         {
+            TopicSearchStr = "";
         }
-
 
         public void PrintInstructions()
         {
@@ -21,7 +20,7 @@ namespace LearningDiary
 
         public void PrintSearchInstructions()
         {
-            Console.WriteLine("Input topic description to search: (activate with Q, exit with Ö): ");
+            Console.Write("Input topic description to search: (activate with Q, exit with Ö): ");
 
         }
 
@@ -109,6 +108,23 @@ namespace LearningDiary
         }
 
 
+
+        public void DrawUserSearchInputText(int searchStartLeftPosition , int searchStartTopPosition, string userInput) {
+
+            Console.SetCursorPosition(searchStartLeftPosition, searchStartTopPosition);
+
+            if (userInput == "")
+            {
+                Console.Write(new string(' ', Console.BufferWidth - searchStartLeftPosition));
+            }
+            else
+            {
+                Console.Write(userInput);
+            }
+        }
+
+
+
         public void DrawTopicTableWithSearch(int tableStartLeft, int tableStartTop, int selectedRow, List<Topic> topics, int unfilteredTopicListLength)
         {
             //Kursori aina samaan paikkaan piirron alussa
@@ -136,20 +152,7 @@ namespace LearningDiary
                 {
                     Console.SetCursorPosition(0, Console.WindowHeight - 10);
 
-                    //if (this.searhcstr == "")
-                    //{
-                    //    Console.Write(new string(' ', Console.BufferWidth));
-                    //}
-                    //else
-                    //{
-                    //    Console.Write(this.searhcstr);
-                    //}
-                    ////kirjoita tyhjät rivit, clear vilkuttaa ruutua
-                    //for (int i = consoleRowBeingDrawn+1; i <= consoleRowBeingDrawn+blankRowsToDraw; i++)
-                    //{
-                    //    Console.SetCursorPosition(0, i);
-                    //    Console.Write(new string(' ', Console.BufferWidth));
-                    //}
+                    
 
                     return;
                 }

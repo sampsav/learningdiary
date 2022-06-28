@@ -15,12 +15,12 @@ namespace LearningDiary
         public void PrintInstructions()
         {
             Console.WriteLine("Usage Instructions:\nArrows: Cycle topic list, S: Start selected topic, F: Finish selected topic, " +
-                    "A: Add new topic, E:Exit program, D: remove topic ,TODO: Q: activate topic search mode");
+                    "A: Add new topic, E:Exit program, D: remove topic , Q: activate topic search mode");
         }
 
         public void PrintSearchInstructions()
         {
-            Console.Write("Input topic description to search: (activate with Q, exit with Ö): ");
+            Console.Write("Input topic description to search: (activate with Q, accept search str with Enter): ");
 
         }
 
@@ -107,8 +107,6 @@ namespace LearningDiary
 
         }
 
-
-
         public void DrawUserSearchInputText(int searchStartLeftPosition , int searchStartTopPosition, string userInput) {
 
             Console.SetCursorPosition(searchStartLeftPosition, searchStartTopPosition);
@@ -120,44 +118,6 @@ namespace LearningDiary
             else
             {
                 Console.Write(userInput);
-            }
-        }
-
-
-
-        public void DrawTopicTableWithSearch(int tableStartLeft, int tableStartTop, int selectedRow, List<Topic> topics, int unfilteredTopicListLength)
-        {
-            //Kursori aina samaan paikkaan piirron alussa
-
-            int rowsToDraw = topics.Count;
-            int consoleRowBeingDrawn = tableStartTop;
-            int currentLogicalRow = 1;
-            bool colorThisRow;
-            int blankRowsToDraw = unfilteredTopicListLength - rowsToDraw;
-            foreach (Topic item in topics)
-            {
-
-                //Jos ikkunaa scrollaa ja yrittää asettaa cursoria näkyvän osan ulkopuolelle SetCursorPosition metodi asettaa origon scrollatun ikkunan mukaisesti
-                Console.SetCursorPosition(0, consoleRowBeingDrawn);
-                if (currentLogicalRow == selectedRow)
-                {
-                    colorThisRow = true;
-                }
-                else
-                {
-                    colorThisRow = false;
-                }
-                PrintLearningTopicRow(item, colorThisRow);
-                if (rowsToDraw == currentLogicalRow)
-                {
-                    Console.SetCursorPosition(0, Console.WindowHeight - 10);
-
-                    
-
-                    return;
-                }
-                consoleRowBeingDrawn++;
-                currentLogicalRow++;
             }
         }
 

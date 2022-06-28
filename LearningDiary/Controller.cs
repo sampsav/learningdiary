@@ -11,6 +11,7 @@ namespace LearningDiary
         public LearningDiary ObjectStorage;
         public LearningDiaryViews Views;
         public string searhcstr;
+        public bool searchModeActive;
 
         public Controller(LearningDiaryViews views, LearningDiary objectStorage)
         {
@@ -45,7 +46,7 @@ namespace LearningDiary
 
             int currentMenuItem = 0;
             bool updateLoop = true;
-            bool searchModeActive = false;
+            this.searchModeActive = false;
             bool printHeaderAndInstructions = true;
 
             int menuRowCount = -1;
@@ -138,7 +139,7 @@ namespace LearningDiary
                             break;
 
                         case ConsoleKey.Q:
-                            searchModeActive = true;
+                            this.searchModeActive = true;
                             break;
                         case ConsoleKey.A:
                             try
@@ -165,7 +166,7 @@ namespace LearningDiary
                     }
                 }
 
-                if (searchModeActive)
+                if (this.searchModeActive)
                 {
                     TopicSearchModeController(cursorInitialLeftPos,cursorInitialTopPos,cursorTopicSearcLeftPosition,cursorTopicSearchTopPosition, printableVisibleRows);
                 }
@@ -214,7 +215,7 @@ namespace LearningDiary
 
         private void TopicSearchModeController(int cursorInitialLeftPos, int cursorInitialTopPos, int cursorTopicSearcLeftPosition, int cursorTopicSearcTopPosition, int sizeOfScreenBuffer)
         {
-            Thread t = new Thread(new ThreadStart(ThreadInputTest));
+            Thread t = new Thread(new ThreadStart(SearchInputThread));
             t.Start();
             while (true)
             {
@@ -230,6 +231,11 @@ namespace LearningDiary
                 this.Views.DrawTopicTable(cursorInitialLeftPos, cursorInitialTopPos, -1, filteredTopics);
                 this.Views.WriteEmptyLines(cursorInitialTopPos + filteredTopics.Count, sizeOfScreenBuffer);
 
+                if (!this.searchModeActive)
+                {
+                    break;
+                }
+
 
 
             }
@@ -237,16 +243,20 @@ namespace LearningDiary
         
         }
 
-        private void ThreadInputTest()
+        private void SearchInputThread()
         {
             while (true)
             {
                 if (Console.KeyAvailable)
                 {
                     ConsoleKeyInfo name = Console.ReadKey(false);
-        
-        
-                    if (name.Key == ConsoleKey.Backspace)
+
+                    if (name.Key == ConsoleKey.Enter)
+                    {
+                        this.searchModeActive = false;
+                        break;
+                    }
+                    else if (name.Key == ConsoleKey.Backspace)
                     {
                         this.searhcstr = "";
         

@@ -5,12 +5,13 @@ using System.Threading;
 
 namespace LearningDiary
 {
-    class Controller
+    public class Controller
     {
 
         public LearningDiary ObjectStorage;
         public LearningDiaryViews Views;
         public string searhcstr;
+        public bool searchModeActive;
 
         public Controller(LearningDiaryViews views, LearningDiary objectStorage)
         {
@@ -28,10 +29,9 @@ namespace LearningDiary
         {
             Console.Clear();
             int printableVisibleRows = 36;
-            List<Topic> topicObjects = this.ObjectStorage.GetAllTopics();
-            List<Topic> filteredTopics = GetFilteredTopicList(topicObjects, this.searhcstr, printableVisibleRows);
+            List<Topic> filteredTopics = this.ObjectStorage.GetAllTopicsTitlesMatching(this.searhcstr, printableVisibleRows);
 
-            if (topicObjects.Count == 0)
+            if (filteredTopics.Count == 0)
             {
                 Console.WriteLine("No Topics in Learning Diary");
                 Thread.Sleep(5000);
@@ -46,7 +46,7 @@ namespace LearningDiary
 
             int currentMenuItem = 0;
             bool updateLoop = true;
-            bool searchModeActive = false;
+            this.searchModeActive = false;
             bool printHeaderAndInstructions = true;
 
             int menuRowCount = -1;
@@ -61,8 +61,8 @@ namespace LearningDiary
                     this.Views.PrintSearchInstructions();
 
                     (cursorTopicSearcLeftPosition, cursorTopicSearchTopPosition) = Console.GetCursorPosition();
-
-                    this.Views.PrintHeadingRow(topicObjects);
+                    Console.Write("\n");
+                    this.Views.PrintHeadingRow(filteredTopics);
                     (cursorInitialLeftPos, cursorInitialTopPos) = Console.GetCursorPosition();
                     printableVisibleRows = Console.BufferHeight - cursorInitialTopPos;
                     printHeaderAndInstructions = false;
@@ -71,7 +71,7 @@ namespace LearningDiary
                 if (currentMenuItem >= 0 && currentMenuItem < filteredTopics.Count)
                 {
                     menuRowCount = filteredTopics.Count - 1;
-                    selectedTopicId = filteredTopics[currentMenuItem].id;
+                    selectedTopicId = filteredTopics[currentMenuItem].TopicId;
                 }
                 else if (filteredTopics.Count == 0)
                 {
@@ -139,7 +139,7 @@ namespace LearningDiary
                             break;
 
                         case ConsoleKey.Q:
-                            searchModeActive = true;
+                            this.searchModeActive = true;
                             break;
                         case ConsoleKey.A:
                             try
@@ -166,16 +166,15 @@ namespace LearningDiary
                     }
                 }
 
-                if (searchModeActive)
+                if (this.searchModeActive)
                 {
-                    //TopicSearchInput();
+                    TopicSearchModeController(cursorInitialLeftPos,cursorInitialTopPos,cursorTopicSearcLeftPosition,cursorTopicSearchTopPosition, printableVisibleRows);
                 }
 
                 else
                 {
 
-                    topicObjects = this.ObjectStorage.GetAllTopics();
-                    filteredTopics = GetFilteredTopicList(topicObjects, this.searhcstr, printableVisibleRows);
+                    filteredTopics = this.ObjectStorage.GetAllTopicsTitlesMatching(this.searhcstr, printableVisibleRows);
 
                     if (filteredTopics.Count > 0)
                     {
@@ -214,54 +213,65 @@ namespace LearningDiary
 
         }
 
-        //private static void TopicSearchInput()
-        //{
-        //    Thread t = new Thread(new ThreadStart(ThreadInputTest));
-        //    t.Start();
-        //    while (true)
-        //    {
-        //        int unfilteredTopicListLength = this.ObjectStorage.GetAllTopics().Count;
-        //        List<Topic> filteredTopicObjects = this.ObjectStorage.GetAllTopicsTitlesMatching(this.searhcstr);
-        //        // if (filteredTopicObjects.Count == 0)
-        //        // {
-        //        //     Console.Clear();
-        //        //    Console.WriteLine("tyhjä");
-        //        // }
-        //    
-        //    
-        //        this.Views.DrawTopicTableWithSearch(cursorInitialLeftPos, cursorInitialTopPos, currentMenuItem, filteredTopicObjects, unfilteredTopicListLength);
-        //        //Thread.Sleep(400);
-        //    
-        //    }
-        //
-        //
-        //}
+        private void TopicSearchModeController(int cursorInitialLeftPos, int cursorInitialTopPos, int cursorTopicSearcLeftPosition, int cursorTopicSearcTopPosition, int sizeOfScreenBuffer)
+        {
+            Thread t = new Thread(new ThreadStart(SearchInputThread));
+            t.Start();
+            while (true)
+            {
+                //int unfilteredTopicListLength = this.ObjectStorage.;
+                List<Topic> filteredTopics = this.ObjectStorage.GetAllTopicsTitlesMatching(this.searhcstr, sizeOfScreenBuffer);
+                // if (filteredTopicObjects.Count == 0)
+                // {
+                //     Console.Clear();
+                //    Console.WriteLine("tyhjä");
+                // }
 
-        //private void ThreadInputTest()
-        //{
-        //    while (true)
-        //    {
-        //        if (Console.KeyAvailable)
-        //        {
-        //            ConsoleKeyInfo name = Console.ReadKey(false);
-        //
-        //
-        //            if (name.Key == ConsoleKey.Backspace)
-        //            {
-        //                this.searhcstr = "";
-        //
-        //            }
-        //            else
-        //            {
-        //                //this.searhcstr += name.KeyChar.ToString();
-        //                this.searhcstr += "admin";
-        //            }
-        //
-        //            //Console.WriteLine(searchstr);
-        //
-        //        }
-        //    }
-        //}
+                this.Views.DrawUserSearchInputText(cursorTopicSearcLeftPosition,cursorTopicSearcTopPosition,this.searhcstr);
+                this.Views.DrawTopicTable(cursorInitialLeftPos, cursorInitialTopPos, -1, filteredTopics);
+                this.Views.WriteEmptyLines(cursorInitialTopPos + filteredTopics.Count, sizeOfScreenBuffer);
+
+                if (!this.searchModeActive)
+                {
+                    break;
+                }
+
+
+
+            }
+        
+        
+        }
+
+        private void SearchInputThread()
+        {
+            while (true)
+            {
+                if (Console.KeyAvailable)
+                {
+                    ConsoleKeyInfo name = Console.ReadKey(false);
+
+                    if (name.Key == ConsoleKey.Enter)
+                    {
+                        this.searchModeActive = false;
+                        break;
+                    }
+                    else if (name.Key == ConsoleKey.Backspace)
+                    {
+                        this.searhcstr = "";
+        
+                    }
+                    else
+                    {
+                        this.searhcstr += name.KeyChar.ToString();
+                        //this.searhcstr += "admin";
+                    }
+        
+                    //Console.WriteLine(searchstr);
+        
+                }
+            }
+        }
 
 
     }

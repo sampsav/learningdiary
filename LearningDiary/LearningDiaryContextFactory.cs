@@ -13,11 +13,7 @@ namespace LearningDiary
     public class LearningDiaryContextFactory : IDesignTimeDbContextFactory<LearningDiaryContext>
     {
         public LearningDiaryContext CreateDbContext(string[] args)
-        {
-            
-            //var optionsBuilder = new DbContextOptionsBuilder<LearningDiaryContext>();
-            //optionsBuilder.UseSqlServer(getdbConfigStr());
-    
+        {    
             return new LearningDiaryContext();
         }
 

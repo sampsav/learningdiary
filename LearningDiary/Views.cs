@@ -1,7 +1,7 @@
-﻿using System;
+﻿using ClassLibraries;
+using System;
 using System.Collections.Generic;
 using System.Text;
-using ClassLibraries;
 
 namespace LearningDiary
 {
@@ -39,6 +39,7 @@ namespace LearningDiary
             int consoleRowBeingDrawn = tableStartTop;
             int currentLogicalRow = 0;
             bool colorThisRow;
+            Console.SetCursorPosition(0, tableStartTop);
             foreach (Topic item in topics)
             {
 
@@ -78,11 +79,24 @@ namespace LearningDiary
                 else if (property.Name.IndexOf("TimeSpent") != -1)
                 {
                     double converted = Convert.ToDouble(prop);
-                    if (!DateTools.IsInTime(item.StartLearningDate.AddSeconds(item.EstimatedTimeToMaster)))
+                    TimeSpan t = TimeSpan.FromSeconds(converted);
+
+                    string formattedTimeSpent = string.Format("{0:D2}d:{1:D2}h:{2:D2}m:{3:D2}s",
+                                    t.Days,
+                                    t.Hours,
+                                    t.Minutes,
+                                    t.Seconds);
+
+                    //class method käyttö
+                    if (!DateTools.IsInTime(item.StartLearningDate.AddHours(item.EstimatedTimeToMaster)) && item.StartLearningDate > DateTime.MinValue)
                     {
-                    stringBuilder.Append(StringFormatterToTable(Math.Round(converted).ToString() + "s, topic is late!"));
+                        stringBuilder.Append(StringFormatterToTable(formattedTimeSpent + "!!"));
                     }
-                    stringBuilder.Append(StringFormatterToTable(Math.Round(converted).ToString() + "s"));
+                    else
+                    {
+                    stringBuilder.Append(StringFormatterToTable(formattedTimeSpent));
+
+                    }
                 }
 
                 else
@@ -112,7 +126,8 @@ namespace LearningDiary
 
         }
 
-        public void DrawUserSearchInputText(int searchStartLeftPosition , int searchStartTopPosition, string userInput) {
+        public void DrawUserSearchInputText(int searchStartLeftPosition, int searchStartTopPosition, string userInput)
+        {
 
             Console.SetCursorPosition(searchStartLeftPosition, searchStartTopPosition);
 

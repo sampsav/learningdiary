@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 
 namespace LearningDiary
@@ -64,7 +63,7 @@ namespace LearningDiary
                     Console.Write("\n");
                     this.Views.PrintHeadingRow(filteredTopics);
                     (cursorInitialLeftPos, cursorInitialTopPos) = Console.GetCursorPosition();
-                    printableVisibleRows = Console.BufferHeight-2 - cursorInitialTopPos;
+                    printableVisibleRows = Console.BufferHeight - 2 - cursorInitialTopPos;
                     printHeaderAndInstructions = false;
                 }
 
@@ -73,11 +72,6 @@ namespace LearningDiary
                     menuRowCount = filteredTopics.Count - 1;
                     selectedTopicId = filteredTopics[currentMenuItem].TopicId;
                 }
-                else if (currentMenuItem > filteredTopics.Count)
-                {
-                    currentMenuItem = filteredTopics.Count - 1;
-                }
-
 
                 //non blocking input
                 if (Console.KeyAvailable)
@@ -121,7 +115,7 @@ namespace LearningDiary
                         case ConsoleKey.D:
                             try
                             {
-                                if (inBounds(currentMenuItem,filteredTopics))
+                                if (inBounds(currentMenuItem, filteredTopics))
                                 {
                                     this.ObjectStorage.DeleteTopicById(selectedTopicId);
                                 }
@@ -130,7 +124,7 @@ namespace LearningDiary
                             catch (Exception e)
                             {
                                 Console.WriteLine(e);
-                                
+
                             }
                             break;
 
@@ -164,7 +158,7 @@ namespace LearningDiary
 
                 if (this.searchModeActive)
                 {
-                    TopicSearchModeController(cursorInitialLeftPos,cursorInitialTopPos,cursorTopicSearcLeftPosition,cursorTopicSearchTopPosition, printableVisibleRows);
+                    TopicSearchModeController(cursorInitialLeftPos, cursorInitialTopPos, cursorTopicSearcLeftPosition, cursorTopicSearchTopPosition, printableVisibleRows);
                 }
 
                 else
@@ -178,7 +172,6 @@ namespace LearningDiary
                         this.Views.WriteEmptyLines(cursorInitialTopPos + filteredTopics.Count, lastVisibleRow);
                         //Vähennä ruudun välkkymistä, mutta aiheuttaa lagia näppäinkomentoihin
                         Thread.Sleep(40);
-
                     }
 
                     else
@@ -196,25 +189,20 @@ namespace LearningDiary
             t.Start();
             while (true)
             {
-                
+
                 List<Topic> filteredTopics = this.ObjectStorage.GetAllTopicsTitlesMatching(this.searhcstr, sizeOfScreenBuffer);
 
-                this.Views.DrawUserSearchInputText(cursorTopicSearcLeftPosition,cursorTopicSearcTopPosition,this.searhcstr);
+                this.Views.DrawUserSearchInputText(cursorTopicSearcLeftPosition, cursorTopicSearcTopPosition, this.searhcstr);
                 this.Views.DrawTopicTable(cursorInitialLeftPos, cursorInitialTopPos, -1, filteredTopics);
                 this.Views.WriteEmptyLines(cursorInitialTopPos + filteredTopics.Count, sizeOfScreenBuffer + cursorInitialTopPos);
+                Thread.Sleep(40);
 
                 if (!this.searchModeActive)
                 {
                     break;
                 }
-
-
-
             }
-        
-        
         }
-
         private void SearchInputThread()
         {
             while (true)
@@ -231,16 +219,12 @@ namespace LearningDiary
                     else if (name.Key == ConsoleKey.Backspace)
                     {
                         this.searhcstr = "";
-        
+
                     }
                     else
                     {
                         this.searhcstr += name.KeyChar.ToString();
-                        //this.searhcstr += "admin";
                     }
-        
-                    //Console.WriteLine(searchstr);
-        
                 }
             }
         }

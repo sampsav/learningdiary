@@ -15,19 +15,6 @@ namespace LearningDiary
         public bool Deleted { get; set; }
 
         public Task() { }
-        //public Task(int id, string title, string description, string notes, DateTime deadline)
-        //{
-        //    this.Notes = notes;
-        //    this.Deadline = deadline;
-        //}
-        //
-        //public Task(int id, int topicId, string title, string description, string notes, DateTime deadline)
-        //{
-        //    this.TopicId = topicId;
-        //    this.Notes = notes;
-        //    this.Deadline = deadline;
-        //}
-
 
         public void FinishTask()
         {

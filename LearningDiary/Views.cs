@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ClassLibraries;
 
 namespace LearningDiary
 {
@@ -77,6 +78,10 @@ namespace LearningDiary
                 else if (property.Name.IndexOf("TimeSpent") != -1)
                 {
                     double converted = Convert.ToDouble(prop);
+                    if (!DateTools.IsInTime(item.StartLearningDate.AddSeconds(item.EstimatedTimeToMaster)))
+                    {
+                    stringBuilder.Append(StringFormatterToTable(Math.Round(converted).ToString() + "s, topic is late!"));
+                    }
                     stringBuilder.Append(StringFormatterToTable(Math.Round(converted).ToString() + "s"));
                 }
 
@@ -99,7 +104,7 @@ namespace LearningDiary
         {
 
 
-            for (int i = lastRowDrawn; i <= lastRowVisible; i++)
+            for (int i = lastRowDrawn; i < lastRowVisible; i++)
             {
                 Console.SetCursorPosition(0, i);
                 Console.Write(new string(' ', Console.BufferWidth));

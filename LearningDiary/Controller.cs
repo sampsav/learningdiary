@@ -28,7 +28,7 @@ namespace LearningDiary
         private void TopicControls()
         {
             Console.Clear();
-            int printableVisibleRows = 36;
+            int printableVisibleRows = 26;
             List<Topic> filteredTopics = this.ObjectStorage.GetAllTopicsTitlesMatching(this.searhcstr, printableVisibleRows);
 
             if (filteredTopics.Count == 0)
@@ -38,7 +38,7 @@ namespace LearningDiary
                 return;
             }
 
-            int lastVisibleRow = Console.BufferHeight - 1;
+            int lastVisibleRow = Console.BufferHeight;
             int cursorTopicSearcLeftPosition = 0;
             int cursorTopicSearchTopPosition = 0;
             int cursorInitialLeftPos = 0;
@@ -64,18 +64,14 @@ namespace LearningDiary
                     Console.Write("\n");
                     this.Views.PrintHeadingRow(filteredTopics);
                     (cursorInitialLeftPos, cursorInitialTopPos) = Console.GetCursorPosition();
-                    printableVisibleRows = Console.BufferHeight - cursorInitialTopPos;
+                    printableVisibleRows = Console.BufferHeight-2 - cursorInitialTopPos;
                     printHeaderAndInstructions = false;
                 }
 
-                if (currentMenuItem >= 0 && currentMenuItem < filteredTopics.Count)
+                if (inBounds(currentMenuItem, filteredTopics))
                 {
                     menuRowCount = filteredTopics.Count - 1;
                     selectedTopicId = filteredTopics[currentMenuItem].TopicId;
-                }
-                else if (filteredTopics.Count == 0)
-                {
-                    menuRowCount = 0;
                 }
                 else if (currentMenuItem > filteredTopics.Count)
                 {
@@ -125,7 +121,7 @@ namespace LearningDiary
                         case ConsoleKey.D:
                             try
                             {
-                                if (filteredTopics.Count > 0)
+                                if (inBounds(currentMenuItem,filteredTopics))
                                 {
                                     this.ObjectStorage.DeleteTopicById(selectedTopicId);
                                 }
@@ -134,7 +130,7 @@ namespace LearningDiary
                             catch (Exception e)
                             {
                                 Console.WriteLine(e);
-                                return;
+                                
                             }
                             break;
 
@@ -194,42 +190,18 @@ namespace LearningDiary
             }
         }
 
-        public static List<Topic> GetFilteredTopicList(List<Topic> allTopics, string searchStr, int qty) {
-
-            List<Topic> filteredTopics = new List<Topic>();
-
-            if (string.IsNullOrEmpty(searchStr))
-            {
-
-                filteredTopics = allTopics;
-            }
-
-            else
-            {
-                filteredTopics = allTopics.Where(t => t.Title.Contains(searchStr)).ToList();
-            }
-
-            return filteredTopics.Take(qty).ToList();
-
-        }
-
         private void TopicSearchModeController(int cursorInitialLeftPos, int cursorInitialTopPos, int cursorTopicSearcLeftPosition, int cursorTopicSearcTopPosition, int sizeOfScreenBuffer)
         {
             Thread t = new Thread(new ThreadStart(SearchInputThread));
             t.Start();
             while (true)
             {
-                //int unfilteredTopicListLength = this.ObjectStorage.;
+                
                 List<Topic> filteredTopics = this.ObjectStorage.GetAllTopicsTitlesMatching(this.searhcstr, sizeOfScreenBuffer);
-                // if (filteredTopicObjects.Count == 0)
-                // {
-                //     Console.Clear();
-                //    Console.WriteLine("tyhjä");
-                // }
 
                 this.Views.DrawUserSearchInputText(cursorTopicSearcLeftPosition,cursorTopicSearcTopPosition,this.searhcstr);
                 this.Views.DrawTopicTable(cursorInitialLeftPos, cursorInitialTopPos, -1, filteredTopics);
-                this.Views.WriteEmptyLines(cursorInitialTopPos + filteredTopics.Count, sizeOfScreenBuffer);
+                this.Views.WriteEmptyLines(cursorInitialTopPos + filteredTopics.Count, sizeOfScreenBuffer + cursorInitialTopPos);
 
                 if (!this.searchModeActive)
                 {
@@ -272,7 +244,10 @@ namespace LearningDiary
                 }
             }
         }
-
+        private bool inBounds<T>(int index, List<T> list)
+        {
+            return (index >= 0) && (index < list.Count);
+        }
 
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System;
-
+using ClassLibraries;
 
 namespace LearningDiary
 {
@@ -22,15 +22,25 @@ namespace LearningDiary
 
             }
 
-            Console.CursorVisible = false;
-            LearningDiary Wk32diaryrepo = new LearningDiary();
+            DateTime futureDate = DateTime.Now.AddDays(1);
 
-            Wk32diaryrepo.AddTopicToDiary("testi", "testi3", 10, "web");
-            LearningDiaryViews views = new LearningDiaryViews();
+            if (DateTools.IsInFuture(futureDate)) {
+                Console.WriteLine($"{futureDate} on huomenna ja tulevaisuudessa");
+            }
+            else if (!DateTools.IsInFuture(futureDate))
+            {
+            Console.WriteLine($"{futureDate} ei ole tulevaisuudessa");
+            }
 
-            Controller LearningDiaryConterller = new Controller(views, Wk32diaryrepo);
-
-            LearningDiaryConterller.Execute();
+            //Console.CursorVisible = false;
+            //LearningDiary Wk32diaryrepo = new LearningDiary();
+            //
+            //Wk32diaryrepo.AddTopicToDiary("testi", "testi3", 10, "web");
+            //LearningDiaryViews views = new LearningDiaryViews();
+            //
+            //Controller LearningDiaryConterller = new Controller(views, Wk32diaryrepo);
+            //
+            //LearningDiaryConterller.Execute();
 
         }
     }

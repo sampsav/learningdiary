@@ -23,6 +23,10 @@ namespace LearningDiary
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //Changing Database table name to LearningDiaryTasks
+            modelBuilder.Entity<Task>()
+                .ToTable("LearningDiaryTasks");
+
             //soft delete
             modelBuilder.Entity<Topic>()
                         .HasQueryFilter(e => !e.Deleted);

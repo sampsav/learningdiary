@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace LearningDiary
 {
@@ -11,6 +12,7 @@ namespace LearningDiary
         public LearningDiaryViews Views;
         public string searhcstr;
         public bool searchModeActive;
+        public List<Topic> filteredTopics;
 
         public Controller(LearningDiaryViews views, LearningDiary objectStorage)
         {
@@ -19,12 +21,12 @@ namespace LearningDiary
             this.searhcstr = "";
         }
 
-        public void Execute()
+        public async Task Execute()
         {
-            TopicControls();
+            await TopicControls();
         }
 
-        private void TopicControls()
+        private async Task TopicControls()
         {
             Console.Clear();
             int printableVisibleRows = 26;
@@ -164,7 +166,8 @@ namespace LearningDiary
                 else
                 {
 
-                    filteredTopics = this.ObjectStorage.GetAllTopicsTitlesMatching(this.searhcstr, printableVisibleRows);
+                    GetTopicsAsync(printableVisibleRows); 
+                    //this.ObjectStorage.GetAllTopicsTitlesMatchingAsync(this.searhcstr, printableVisibleRows);
 
                     if (filteredTopics.Count > 0)
                     {
@@ -181,6 +184,13 @@ namespace LearningDiary
                     }
                 }
             }
+        }
+
+        private async Task GetTopicsAsync(int printableVisibleRows) 
+        {
+            filteredTopics = await this.ObjectStorage.GetAllTopicsTitlesMatchingAsync(this.searhcstr, printableVisibleRows);
+
+
         }
 
         private void TopicSearchModeController(int cursorInitialLeftPos, int cursorInitialTopPos, int cursorTopicSearcLeftPosition, int cursorTopicSearcTopPosition, int sizeOfScreenBuffer)

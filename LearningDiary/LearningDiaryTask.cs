@@ -2,7 +2,7 @@
 
 namespace LearningDiary
 {
-    public class Task
+    public class LearningDiaryTask
     {
         public int TaskId { get; set; }
         public string Title { get; set; }
@@ -14,7 +14,7 @@ namespace LearningDiary
 
         public bool Deleted { get; set; }
 
-        public Task() { }
+        public LearningDiaryTask() { }
 
         public void FinishTask()
         {

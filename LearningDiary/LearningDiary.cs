@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Threading;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
@@ -13,7 +15,7 @@ namespace LearningDiary
         {
         }
 
-        public void AddTopicToDiary(string title, string description, double estimatedTimeToMaster, string source)
+        public async Task AddTopicToDiary(string title, string description, double estimatedTimeToMaster, string source)
         {
 
             using (var context = new LearningDiaryContext())
@@ -29,10 +31,10 @@ namespace LearningDiary
                     CompletionDate = DateTime.MinValue,
                     AlreadyStudied = false,
                 };
-                context.Topics.Add(newTopic);
-                context.SaveChanges();
-            }
-            }
+               context.Topics.Add(newTopic);
+               await context.SaveChangesAsync();
+            }            
+        }
 
         public void StartTopicById(int topicId)
         {
@@ -119,6 +121,21 @@ namespace LearningDiary
                     .Take(sizeOfScreenBuffer)
                     .ToList();
             return topicsMatchingToSearch;
+            }
+        }
+
+
+        public async Task<List<Topic>> GetAllTopicsTitlesMatchingAsync(string searchPattern, int sizeOfScreenBuffer)
+        {
+            using (var context = new LearningDiaryContext())
+            {
+
+               return  await context.Topics
+                        .Include(e => e.Tasks)
+                        .AsNoTracking()
+                        .Where(x => x.Title.ToLower().Contains(searchPattern.ToLower()))
+                        .Take(sizeOfScreenBuffer)
+                        .ToListAsync();
             }
         }
 

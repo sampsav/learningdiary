@@ -4,7 +4,7 @@ namespace LearningDiary
 {
     class Program
     {
-        static void Main(string[] args)
+        static async System.Threading.Tasks.Task Main(string[] args)
         {
 
             try
@@ -24,12 +24,12 @@ namespace LearningDiary
             Console.CursorVisible = false;
             LearningDiary Wk32diaryrepo = new LearningDiary();
             
-            Wk32diaryrepo.AddTopicToDiary("testi", "testi3", 10, "web");
+            await Wk32diaryrepo.AddTopicToDiary("testi", "testi3", 10, "web");
             LearningDiaryViews views = new LearningDiaryViews();
             
             Controller LearningDiaryConterller = new Controller(views, Wk32diaryrepo);
             
-            LearningDiaryConterller.Execute();
+            await LearningDiaryConterller.Execute();
 
         }
     }

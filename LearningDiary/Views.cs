@@ -200,7 +200,7 @@ namespace LearningDiary
 
         }
 
-        private static void PrintAllTasksRelatedToTopic(List<Task> items)
+        private static void PrintAllTasksRelatedToTopic(List<LearningDiaryTask> items)
         {
             string str = "";
 

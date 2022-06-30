@@ -33,12 +33,12 @@ namespace LearningDiary
                 .UsePropertyAccessMode(PropertyAccessMode.Property);
 
             //soft delete
-            modelBuilder.Entity<Task>()
+            modelBuilder.Entity<LearningDiaryTask>()
                         .HasQueryFilter(e => !e.Deleted);
         }
 
         public DbSet<Topic> Topics { get; set; }
-        public DbSet<Task> Tasks { get; set; }
+        public DbSet<LearningDiaryTask> Tasks { get; set; }
         
 
     }

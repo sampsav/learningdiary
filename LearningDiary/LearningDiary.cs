@@ -76,12 +76,12 @@ namespace LearningDiary
 
         }
 
-        public void DeleteTopicById(int topicId)
+        public async Task DeleteTopicByIdAsync(int topicId)
         {
             using (var context = new LearningDiaryContext())
             {
 
-                Topic dbTopic = context.Topics.Find(topicId);
+                Topic dbTopic =  context.Topics.Find(topicId);
                 if (dbTopic == null)
                 {
                     throw new ArgumentException($"No topic with id {topicId}");
@@ -90,7 +90,7 @@ namespace LearningDiary
                 {
 
                     dbTopic.Deleted = true;
-                    context.SaveChanges();
+                    await context.SaveChangesAsync();                    
                 }
             }
 
@@ -125,11 +125,10 @@ namespace LearningDiary
         }
 
 
-        public async System.Threading.Tasks.Task<List<Topic>> GetAllTopicsTitlesMatchingAsync(string searchPattern, int sizeOfScreenBuffer)
+        public async Task<List<Topic>> GetAllTopicsTitlesMatchingAsync(string searchPattern, int sizeOfScreenBuffer)
         {
             using (var context = new LearningDiaryContext())
             {
-
                return  await context.Topics
                         .Include(e => e.LearningDiaryTasks)
                         .AsNoTracking()

@@ -23,9 +23,6 @@ namespace LearningDiary
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //Changing Database table name to LearningDiaryTasks
-            modelBuilder.Entity<Task>()
-                .ToTable("LearningDiaryTasks");
 
             //soft delete
             modelBuilder.Entity<Topic>()
@@ -42,7 +39,7 @@ namespace LearningDiary
         }
 
         public DbSet<Topic> Topics { get; set; }
-        public DbSet<Task> Tasks { get; set; }
+        public DbSet<LearningDiaryTask> LearningDiaryTasks { get; set; }
         
 
     }

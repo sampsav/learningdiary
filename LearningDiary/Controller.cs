@@ -30,7 +30,7 @@ namespace LearningDiary
         {
             Console.Clear();
             int printableVisibleRows = 26;
-            List<Topic> filteredTopics = this.ObjectStorage.GetAllTopicsTitlesMatching(this.searhcstr, printableVisibleRows);
+            filteredTopics = this.ObjectStorage.GetAllTopicsTitlesMatching(this.searhcstr, printableVisibleRows);
 
             if (filteredTopics.Count == 0)
             {
@@ -117,9 +117,10 @@ namespace LearningDiary
                         case ConsoleKey.D:
                             try
                             {
+                                Console.WriteLine("deleted");
                                 if (inBounds(currentMenuItem, filteredTopics))
                                 {
-                                    this.ObjectStorage.DeleteTopicById(selectedTopicId);
+                                    this.ObjectStorage.DeleteTopicByIdAsync(selectedTopicId);
                                 }
 
                             }
@@ -166,13 +167,13 @@ namespace LearningDiary
                 else
                 {
 
-                    GetTopicsAsync(printableVisibleRows); 
-                    //this.ObjectStorage.GetAllTopicsTitlesMatchingAsync(this.searhcstr, printableVisibleRows);
+                    //GetTopicsAsync(printableVisibleRows); 
+                    filteredTopics = this.ObjectStorage.GetAllTopicsTitlesMatching(this.searhcstr, printableVisibleRows);
 
                     if (filteredTopics.Count > 0)
                     {
                         this.Views.DrawTopicTable(cursorInitialLeftPos, cursorInitialTopPos, currentMenuItem, filteredTopics);
-                        this.Views.WriteEmptyLines(cursorInitialTopPos + filteredTopics.Count, lastVisibleRow);
+                        //this.Views.WriteEmptyLines(cursorInitialTopPos + filteredTopics.Count, lastVisibleRow);
                         //Vähennä ruudun välkkymistä, mutta aiheuttaa lagia näppäinkomentoihin
                         Thread.Sleep(40);
                     }
@@ -186,7 +187,7 @@ namespace LearningDiary
             }
         }
 
-        private async System.Threading.Tasks.Task GetTopicsAsync(int printableVisibleRows) 
+        private async Task GetTopicsAsync(int printableVisibleRows) 
         {
             filteredTopics = await this.ObjectStorage.GetAllTopicsTitlesMatchingAsync(this.searhcstr, printableVisibleRows);
 

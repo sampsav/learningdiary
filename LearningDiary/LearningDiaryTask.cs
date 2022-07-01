@@ -4,7 +4,7 @@ namespace LearningDiary
 {
     public class LearningDiaryTask
     {
-        public int TaskId { get; set; }
+        public int LearningDiaryTaskId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string Notes { get; set; }

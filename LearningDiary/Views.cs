@@ -73,7 +73,7 @@ namespace LearningDiary
 
                 if (prop.IndexOf("Task") != -1)
                 {
-                    stringBuilder.Append(StringFormatterToTable(item.Tasks.Count.ToString()));
+                    stringBuilder.Append(StringFormatterToTable(item.LearningDiaryTasks.Count.ToString()));
                 }
 
                 else if (property.Name.IndexOf("TimeSpent") != -1)

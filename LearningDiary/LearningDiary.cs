@@ -15,7 +15,7 @@ namespace LearningDiary
         {
         }
 
-        public async Task AddTopicToDiary(string title, string description, double estimatedTimeToMaster, string source)
+        public async System.Threading.Tasks.Task AddTopicToDiary(string title, string description, double estimatedTimeToMaster, string source)
         {
 
             using (var context = new LearningDiaryContext())
@@ -102,7 +102,7 @@ namespace LearningDiary
             {
 
                 List<Topic> topics = context.Topics
-                        .Include(e => e.Tasks)
+                        .Include(e => e.LearningDiaryTasks)
                         .AsNoTracking()
                         .Take(sizeOfScreenBuffer)
                         .ToList();
@@ -115,7 +115,7 @@ namespace LearningDiary
             using (var context = new LearningDiaryContext()) { 
             
             List<Topic> topicsMatchingToSearch = context.Topics
-                    .Include(e => e.Tasks)
+                    .Include(e => e.LearningDiaryTasks)
                     .AsNoTracking()
                     .Where(x=> x.Title.ToLower().Contains(searchPattern.ToLower()))
                     .Take(sizeOfScreenBuffer)
@@ -125,13 +125,13 @@ namespace LearningDiary
         }
 
 
-        public async Task<List<Topic>> GetAllTopicsTitlesMatchingAsync(string searchPattern, int sizeOfScreenBuffer)
+        public async System.Threading.Tasks.Task<List<Topic>> GetAllTopicsTitlesMatchingAsync(string searchPattern, int sizeOfScreenBuffer)
         {
             using (var context = new LearningDiaryContext())
             {
 
                return  await context.Topics
-                        .Include(e => e.Tasks)
+                        .Include(e => e.LearningDiaryTasks)
                         .AsNoTracking()
                         .Where(x => x.Title.ToLower().Contains(searchPattern.ToLower()))
                         .Take(sizeOfScreenBuffer)

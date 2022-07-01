@@ -51,7 +51,7 @@ namespace LearningDiary.Migrations
 
                     b.HasIndex("TopicId");
 
-                    b.ToTable("Tasks");
+                    b.ToTable("LearningDiaryTasks");
                 });
 
             modelBuilder.Entity("LearningDiary.Topic", b =>

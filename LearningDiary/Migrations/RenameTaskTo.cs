@@ -7,9 +7,9 @@ namespace LearningDiary.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.RenameTable(
-                name: "Task",
+                name: "Tasks",
                 schema: "dbo",
-                newName: "LearningDiaryTask",
+                newName: "LearningDiaryTasks",
                 newSchema: "dbo");
         }
 
@@ -17,9 +17,9 @@ namespace LearningDiary.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.RenameTable(
-                name: "LearningDiaryTask",
+                name: "LearningDiaryTasks",
                 schema: "dbo",
-                newName: "Task",
+                newName: "Tasks",
                 newSchema: "dbo");
         }
     }

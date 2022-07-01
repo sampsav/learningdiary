@@ -33,7 +33,7 @@ namespace LearningDiary
         public DateTime CompletionDate { get; set; }
         public bool AlreadyStudied { get; set; }
 
-        public ICollection<LearningDiaryTask> Tasks { get; } = new List<LearningDiaryTask>();
+        public ICollection<LearningDiaryTask> LearningDiaryTasks { get; } = new List<LearningDiaryTask>();
 
         public bool Deleted { get; set; }
 

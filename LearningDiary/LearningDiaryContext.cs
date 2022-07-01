@@ -42,7 +42,7 @@ namespace LearningDiary
         }
 
         public DbSet<Topic> Topics { get; set; }
-        public DbSet<LearningDiaryTask> Tasks { get; set; }
+        public DbSet<Task> Tasks { get; set; }
         
 
     }

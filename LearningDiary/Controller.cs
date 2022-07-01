@@ -21,12 +21,12 @@ namespace LearningDiary
             this.searhcstr = "";
         }
 
-        public async Task Execute()
+        public async System.Threading.Tasks.Task Execute()
         {
             await TopicControls();
         }
 
-        private async Task TopicControls()
+        private async System.Threading.Tasks.Task TopicControls()
         {
             Console.Clear();
             int printableVisibleRows = 26;
@@ -186,7 +186,7 @@ namespace LearningDiary
             }
         }
 
-        private async Task GetTopicsAsync(int printableVisibleRows) 
+        private async System.Threading.Tasks.Task GetTopicsAsync(int printableVisibleRows) 
         {
             filteredTopics = await this.ObjectStorage.GetAllTopicsTitlesMatchingAsync(this.searhcstr, printableVisibleRows);
 

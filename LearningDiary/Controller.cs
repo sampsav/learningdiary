@@ -167,8 +167,8 @@ namespace LearningDiary
                 else
                 {
 
-                    //GetTopicsAsync(printableVisibleRows); 
-                    filteredTopics = this.ObjectStorage.GetAllTopicsTitlesMatching(this.searhcstr, printableVisibleRows);
+                    GetTopicsAsync(printableVisibleRows); 
+                    //filteredTopics = this.ObjectStorage.GetAllTopicsTitlesMatching(this.searhcstr, printableVisibleRows);
 
                     if (filteredTopics.Count > 0)
                     {
@@ -189,8 +189,9 @@ namespace LearningDiary
 
         private async Task GetTopicsAsync(int printableVisibleRows) 
         {
-            filteredTopics = await this.ObjectStorage.GetAllTopicsTitlesMatchingAsync(this.searhcstr, printableVisibleRows);
 
+            filteredTopics = await this.ObjectStorage.GetAllTopicsTitlesMatchingAsync(this.searhcstr, printableVisibleRows);
+            Thread.Sleep(100000);
 
         }
 

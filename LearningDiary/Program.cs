@@ -24,7 +24,8 @@ namespace LearningDiary
             Console.CursorVisible = false;
             LearningDiary Wk32diaryrepo = new LearningDiary();
             
-            await Wk32diaryrepo.AddTopicToDiary("testi", "testi3", 10, "web");
+            //await Wk32diaryrepo.AddTopicToDiary("testi", "testi3", 10, "web");
+            await Wk32diaryrepo.AddTopicToDiarytest("addtopictesti", "testi10", 20, "web");
             LearningDiaryViews views = new LearningDiaryViews();
             
             Controller LearningDiaryConterller = new Controller(views, Wk32diaryrepo);
